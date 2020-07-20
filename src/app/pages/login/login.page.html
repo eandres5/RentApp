@@ -1,0 +1,18 @@
+<ion-content padding>
+  <img class="icono" src="assets/icon/escudo.png">
+  <br>
+  <ion-item>
+    <ion-label position="floating" style="text-align: center">Correo Electronico</ion-label>
+    <ion-input type="text" name="email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-label position="floating" style="text-align: center">Contraseña</ion-label>
+    <ion-input type="password" name="contrasena" [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <br>
+  <ion-button (click)="verificacionLogin()" expand="block" color="tertiary">Ingresar</ion-button>
+  <br>
+  <ion-button (click)="resetPassword()" expand="block" color="tertiary">Olvide Contraseña</ion-button>
+
+</ion-content>
