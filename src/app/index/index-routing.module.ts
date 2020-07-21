@@ -13,9 +13,19 @@ const routes: Routes = [
     component: IndexPage,
     //se cargar las paginas de login
     children: [
-      {path: '', loadChildren: () => import('../pages/welcome/welcome.module').then(m=>m.WelcomePageModule)},
-      {path: 'login', loadChildren: () => import('../pages/login/login.module').then(m=>m.LoginPageModule)},
-      {path: 'signup', loadChildren: () => import('../pages/signup/signup.module').then(m=>m.SignupPageModule)}
+      {
+        path: '', 
+        loadChildren: () => import('../pages/welcome/welcome.module').then(m=>m.WelcomePageModule)},
+      {
+        path: 'login', 
+        loadChildren: () => import('../pages/login/login.module').then(m=>m.LoginPageModule)},
+      {
+        path: 'signup', 
+        loadChildren: () => import('../pages/signup/signup.module').then(m=>m.SignupPageModule)},
+      {
+        path: 'registro',
+        loadChildren: () => import('../pages/registro/registro.module').then( m => m.RegistroPageModule)
+      }
     ]
   }
 ];
