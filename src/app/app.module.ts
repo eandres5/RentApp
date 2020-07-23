@@ -8,7 +8,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+//FCM
+import { FCM } from '@ionic-native/fcm/ngx';
+//@ionic-native/fcm/ngx'
 /*
 
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
@@ -34,9 +36,7 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import {FormsModule} from '@angular/forms';
 //Componentes
 import {SmsComponent} from './pages/sms/sms.component';
-//FCM
-import { FCM } from '@ionic-native/fcm';
-//@ionic-native/fcm/ngx'
+
 //HTTP
 import { HttpClientModule } from '@angular/common/http';
 
@@ -49,6 +49,7 @@ import { HttpClientModule } from '@angular/common/http';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
+    FCM,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
