@@ -1,9 +1,45 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>articulos</ion-title>
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>Mira lo nuevo de RentApp</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarpop($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  <ion-item>
+    <ion-searchbar type="text" ></ion-searchbar>
+  </ion-item>
+  <!--
+    (ionChange)="buscar($event)"
+  -->
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Articulos</ion-label>
+    </ion-list-header>
+    <!--El pipe se le importa en pagina.module.ts para que funcione
+      *ngFor="let articulo of articulos | filtro: textoBuscar"
+    -->
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <!--
+          <img [src]=" articulo.img == ''? '/assets/noimage.png': articulo.img" [routerLink]="'/detalles/' + articulo.id ">
+        -->
+
+      </ion-thumbnail>
+      <ion-label>
+        <!--
+          <h2>{{articulo.titulo}}</h2>
+        <p>{{articulo.descripcion}}</p>
+        <p>Valor: {{articulo.costo}} $</p>
+        -->
+
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
 
 </ion-content>

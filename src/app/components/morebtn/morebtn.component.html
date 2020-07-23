@@ -1,0 +1,9 @@
+<ion-list>
+  <ion-item lines="none" detail="false" button>
+    <ion-icon name="moon"></ion-icon>
+    <ion-label>Modo Oscuro</ion-label>
+    <ion-toggle color="tertiary" [(ngModel)]="darkMode" (ionChange)="modoOscuro()"></ion-toggle>
+  </ion-item>
+  <ion-item lines="none" detail="false" button slot="center" (click)="cerrarSesion()">
+    <ion-icon name="exit"></ion-icon>Cerrar Sesión</ion-item>
+</ion-list>

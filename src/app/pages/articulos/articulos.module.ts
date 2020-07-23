@@ -7,13 +7,19 @@ import { IonicModule } from '@ionic/angular';
 import { ArticulosPageRoutingModule } from './articulos-routing.module';
 
 import { ArticulosPage } from './articulos.page';
+import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
+  entryComponents:[
+    MorebtnComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ArticulosPageRoutingModule
+    ArticulosPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [ArticulosPage]
 })

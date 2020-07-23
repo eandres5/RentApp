@@ -1,9 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>detallearticulo</ion-title>
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>Detalles</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarpop($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  <ion-item>
+    <ion-searchbar type="text" ></ion-searchbar>
+  </ion-item>
+  <!--
+    (ionChange)="buscar($event)"
+  -->
 </ion-header>
 
 <ion-content>
+  
 
 </ion-content>

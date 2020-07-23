@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
   }
 
   verificacionLogin(){
-    this.router.navigate(['home']);
+    this.router.navigate(['home/articulos']);
   }
 
   resetPassword(){
