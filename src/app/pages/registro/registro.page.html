@@ -1,39 +1,35 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title style="text-align: center">Registro</ion-title>
+    <ion-title style="text-align: center">Datos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
-  <!--
-    <img  class="icono" src="assets/icon/registro.png">
     <br>
-    <form [formGroup]="registrationForm" (ngSubmit)="ingresarUsuario()"> 
-      <ion-item>
-        <ion-label position="floating" style="text-align: center">Ingrese Correo Electrónico</ion-label>
-        <ion-input formControlName="emailv" type="text" name="email" [(ngModel)]="email"></ion-input>
+    <ion-label>Seleccionar Imagen: </ion-label>
+    <ion-input type="file" accept=".png, .jpg" (change)='onUpload($event)'></ion-input>
+    <br>
+    <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+    <ion-input #imageUser  type="hidden" [value]="urlImage | async" name="url"></ion-input>
+    <br>
+  
+    <ion-item>
+        <ion-label position="floating" style="text-align: center">Ingrese Nombre:</ion-label>
+        <ion-input type="text" name="nombre" [(ngModel)]="nombre"></ion-input>
       </ion-item>
-      <div *ngFor="let error of errorMessages.emailv">
-        <ng-container *ngIf="registrationForm.get('emailv').hasError(error.type) && (emailv.dirty || emailv.touched)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-      </div>
     <br>
     <ion-item>
-      <ion-label position="floating" style="text-align: center">Ingrese Contraseña</ion-label>
-      <ion-input formControlName="passv" type="password" name="contrasena" [(ngModel)]="pass"></ion-input>
-      <div *ngFor="let error of errorMessages.passv">
-        <ng-container *ngIf="passv.hasError(error.type) && (passv.dirty || passv.touched)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-      </div>
+      <ion-label position="floating" style="text-align: center">Ingrese Apellido:</ion-label>
+      <ion-input type="text" name="apellido" [(ngModel)]="apellido"></ion-input>
     </ion-item>
     <br>
-    <ion-button [disabled]="!registrationForm.valid" expand="block" (click)="ingresarUsuario()" type="submit">Registrarse</ion-button>
+    <ion-item>
+        <ion-label position="floating" style="text-align: center">Ingrese numero de celular:</ion-label>
+        <ion-input type="tel" name="tel" [(ngModel)]="tel"></ion-input>
+    </ion-item>
+    <ion-button  expand="block" *ngIf="urlImage | async; else btnDisabled" (click)="updateProfile()">Guardar</ion-button>
     <br>
-    <ion-button  expand="block"  routerLink="/login">Ingresar</ion-button>
-    </form>
-  -->
-    
+    <ng-template #btnDisabled>
+        <ion-button  expand="block" disabled= true (click)="updateProfile()">Guardar</ion-button>
+    </ng-template>  
 </ion-content>

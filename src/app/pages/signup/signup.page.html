@@ -1,9 +1,55 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>signup</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
+<ion-content padding>
+    <ion-item>
+      <ion-label style="text-align: center">Sign Up</ion-label>
+    </ion-item>
+    <br>
+    <form [formGroup]="registrationForm" (ngSubmit)="ingresarUsuario()"> 
+      <ion-item>
+        <ion-label position="floating" style="text-align: center"><ion-icon name="mail-outline"></ion-icon>  Email</ion-label>
+        <ion-input formControlName="emailv" type="text" name="emailv"></ion-input>
+      </ion-item>
+      <div *ngFor="let error of errorMessages.emailv">
+        <ng-container *ngIf="registrationForm.get('emailv').hasError(error.type) && (emailv.dirty || emailv.touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+    <br>
+    <div class="form-group">
+      <ion-item>
+        <ion-label position="floating" style="text-align: center"><ion-icon name="key-outline"></ion-icon> Contraseña</ion-label>
+        <ion-input type="password" formControlName="passv" name="passv"></ion-input>
+      <div *ngFor="let error of errorMessages.passv">
+        <ng-container *ngIf="passv.hasError(error.type) && (passv.dirty || passv.touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+      </ion-item>
+  </div>
+  <br>
+  <div class="form-group">
+    <ion-item>
+      <ion-label position="floating" style="text-align: center"><ion-icon name="key-outline"></ion-icon> Confirme Contraseña</ion-label>
+      <ion-input type="password" formControlName="confirmpass" name="confirmpass"></ion-input>
+    <div *ngFor="let error of errorMessages.confirmpass">
+      <ng-container *ngIf="confirmpass.hasError(error.type) && (confirmpass.dirty || confirmpass.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+    </ion-item>
+  </div>
+    <br>
+    <ion-item>
+      <ion-checkbox formControlName="checkbox" name="checkbox" color="dark"></ion-checkbox>
+      <ion-label style="text-align: center">Aceptó Politicas de Uso</ion-label>    
+    </ion-item>
+    <br>
+    <ion-button [disabled]="!registrationForm.valid" expand="block" color="tertiary"(click)="ingresarUsuario()" type="submit" class="redondos" >Registrarse</ion-button>
+    <br>
+    <ion-item>
+      <ion-label style="text-align: center;">Ya tengo una cuenta? <ion-label (click)= "navigateLogin()">Iniciar Sesion</ion-label> </ion-label>
+    </ion-item>
+    </form>
 
+  
 </ion-content>
