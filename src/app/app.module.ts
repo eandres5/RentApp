@@ -11,6 +11,19 @@ import { AppComponent } from './app.component';
 //FCM
 import { FCM } from '@ionic-native/fcm/ngx';
 //@ionic-native/fcm/ngx'
+
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
+import { HttpClientModule } from '@angular/common/http';
+
+import { AngularFireAuthModule } from "@angular/fire/auth";
+
+import { Camera } from '@ionic-native/camera/ngx';
+
 /*
 
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
@@ -20,9 +33,7 @@ import { environment } from '../environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
 //importacion para uso de camara
-import { Camera } from '@ionic-native/camera/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { File } from '@ionic-native/file/ngx';
+
 
 //importaciones de pipes
 import { PipesModule } from './pipes/pipes.module';
@@ -30,15 +41,12 @@ import { PipesModule } from './pipes/pipes.module';
 //importacion de formularios
 
 //importacion de FirebaseLogin
-import { AngularFireAuthModule } from "@angular/fire/auth";
+
 
 //Forms
 import {FormsModule} from '@angular/forms';
 //Componentes
 import {SmsComponent} from './pages/sms/sms.component';
-
-//HTTP
-import { HttpClientModule } from '@angular/common/http';
 
 */
 //importacion de angular
@@ -47,11 +55,19 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), 
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    //AngularFireModule.initializeApp(firebaseConfigLogin), 
+    HttpClientModule,
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,],
   providers: [
     FCM,
     StatusBar,
     SplashScreen,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
