@@ -12,6 +12,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 //Librerias para observables y Finalize
 import { finalize } from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
+//Formulario
+import {FormBuilder, Validators, FormGroup, Form, FormControl} from '@angular/forms';
 
 
 @Component({
@@ -20,6 +22,36 @@ import {Observable} from 'rxjs/internal/Observable';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
+
+  get nombrev(){
+    return this.profileForm.get('nombrev');
+  }
+  get apellidov(){
+    return this.profileForm.get('apellidov');
+  }
+  get telv(){
+    return this.profileForm.get('telv');
+  }
+  public errorMessages = {
+    nombrev : [
+      {type: 'required', message: 'Nombre es Requerido'},
+      {type: 'pattern', message: 'Ingrese su Nombre'}
+    ],
+    apellidov : [
+      {type: 'required', message: 'Apellido es requerido'},
+      {type: 'minlength', message: 'Ingrese su Apellido'}
+    ],
+    telv: [
+      {type: 'pattern', message: 'Ingrese correctamente su numero de celular'}
+    ]
+
+  }
+
+  profileForm = this.formBuilder.group({
+    nombrev: ['', [Validators.required, Validators.minLength(5)]],
+    apellidov: ['', Validators.compose([Validators.minLength(5),  Validators.required])],
+    telv: ['', Validators.pattern("^((\\+593-?)|0)?[0-9]{9}$")]
+  });
   //variables para almacenar datos de usuarios
   public nombre: string;
   public apellido: string;
@@ -32,7 +64,7 @@ export class RegistroPage implements OnInit {
 //observable para imagen
   uploadPercent: Observable<number>;
   urlImage: Observable<string>;
-  constructor(private auth: AuthService, private db: AngularFirestore, private authF: AngularFireAuth, private router: Router, private storage: AngularFireStorage) { }
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private db: AngularFirestore, private authF: AngularFireAuth, private router: Router, private storage: AngularFireStorage) { }
 
   ngOnInit() {
   }
@@ -65,16 +97,17 @@ export class RegistroPage implements OnInit {
   }
   //Actualizacion de Perfil 
   updateProfile(){
+    
     this.authF.authState.subscribe(auth=>{
-    this.db.collection('users').doc(auth.uid).update({nombre:this.nombre, 
-      apellido: this.apellido, 
-      telefono: this.tel,
+    this.db.collection('users').doc(auth.uid).update({nombre:this.profileForm.value['nombrev'], 
+      apellido: this.profileForm.value['apellidov'], 
+      telefono: this.profileForm.value['telv'],
       urlimage: this.image
       }).then(()=>{
         this.auth.isAuth().subscribe(user =>{
           if(user){
             user.updateProfile({
-              displayName: this.nombre+" "+this.apellido,
+              displayName: this.profileForm.value['nombrev']+" "+this.profileForm.value['apellidov'],
               photoURL: this.image,
             }).then(function(){
               console.log('User Update');
@@ -84,14 +117,13 @@ export class RegistroPage implements OnInit {
             });
           }
         });
-        this.router.navigate(['\chat']);
+        this.router.navigate(['login']);
         
       }).catch(function(err){
         console.log(err);
       });
-      
-
   })
+  
 }
 
 }
