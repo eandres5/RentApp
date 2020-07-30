@@ -32,6 +32,10 @@ const routes: Routes = [
       {
         path: 'politicas',
         loadChildren: () => import('../pages/politicas/politicas.module').then(m => m.PoliticasPageModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)
       }
     ]
   }
