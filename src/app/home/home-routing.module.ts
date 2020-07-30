@@ -16,7 +16,11 @@ const routes: Routes = [
       { path: 'articulos', loadChildren: () => import('../pages/articulos/articulos.module').then(m => m.ArticulosPageModule) },
       { path: 'detallearticulo', loadChildren: () => import('../pages/detallearticulo/detallearticulo.module').then(m => m.DetallearticuloPageModule) },
       { path: 'nuevoarticulo', loadChildren: () => import('../pages/nuevoarticulo/nuevoarticulo.module').then(m => m.NuevoarticuloPageModule) },
-      { path: 'profile', loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)},
+      { path: 'profile', loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule) },
+      {
+        path: 'chatgeneral',
+        loadChildren: () => import('../pages/chatgeneral/chatgeneral.module').then(m => m.ChatgeneralPageModule)
+      }
 
     ]
   }
