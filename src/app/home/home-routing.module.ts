@@ -13,10 +13,11 @@ const routes: Routes = [
     //se cargan todas las paginas una vez autenticado el usuario
     //paginas que se mostraran con el menu tabs
     children: [
-      {path: 'articulos', loadChildren: () => import('../pages/articulos/articulos.module').then(m=>m.ArticulosPageModule)},
-      {path: 'detallearticulo', loadChildren: () => import('../pages/detallearticulo/detallearticulo.module').then(m=>m.DetallearticuloPageModule)},
-      {path: 'nuevoarticulo', loadChildren: () => import('../pages/nuevoarticulo/nuevoarticulo.module').then(m=>m.NuevoarticuloPageModule)},
-      
+      { path: 'articulos', loadChildren: () => import('../pages/articulos/articulos.module').then(m => m.ArticulosPageModule) },
+      { path: 'detallearticulo', loadChildren: () => import('../pages/detallearticulo/detallearticulo.module').then(m => m.DetallearticuloPageModule) },
+      { path: 'nuevoarticulo', loadChildren: () => import('../pages/nuevoarticulo/nuevoarticulo.module').then(m => m.NuevoarticuloPageModule) },
+      { path: 'profile', loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)},
+
     ]
   }
 ];
@@ -25,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomePageRoutingModule {}
+export class HomePageRoutingModule { }

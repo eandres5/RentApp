@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 //FCM
 import { FCM } from '@ionic-native/fcm/ngx';
 //importacion de environment firebase
-import { firebaseConfig } from '../environments/environment';
+
 //Firebase
 import {AngularFireModule} from "@angular/fire";
 import {AngularFireAuthModule} from "@angular/fire/auth";
@@ -23,17 +23,27 @@ import {FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 //@ionic-native/fcm/ngx'
+//No cambiar esta linea de codigo jamas
+import { environment } from '../environments/environment';
+
+import { Camera } from '@ionic-native/camera/ngx';
+
 /*
 //importacion para uso de camara
-import { Camera } from '@ionic-native/camera/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { File } from '@ionic-native/file/ngx';
+
 
 //importacion Firebase
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 //importaciones de pipes
 import { PipesModule } from './pipes/pipes.module';
 
+//importacion de formularios
+
+//importacion de FirebaseLogin
+
+
+//Forms
+import {FormsModule} from '@angular/forms';
 //Componentes
 import {SmsComponent} from './pages/sms/sms.component';
 
@@ -45,7 +55,7 @@ import {SmsComponent} from './pages/sms/sms.component';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
@@ -55,6 +65,7 @@ import {SmsComponent} from './pages/sms/sms.component';
     FCM,
     StatusBar,
     SplashScreen,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

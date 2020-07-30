@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { PopoverController } from '@ionic/angular';
+import { Router, ActivatedRoute } from '@angular/router';
+import { PopoverController, LoadingController, AlertController, Platform } from '@ionic/angular';
 import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
+import { TaskI } from 'src/app/models/task.interface';
+import { ArticuloService } from 'src/app/services/articulo.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { FormBuilder } from '@angular/forms';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Photo } from 'src/app/models/foto.interface';
 
 @Component({
   selector: 'app-nuevoarticulo',
@@ -10,18 +17,89 @@ import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
 })
 export class NuevoarticuloPage implements OnInit {
 
+  image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+  imagePath: string;
+  upload: any;
+  captureDataUrl: string;
+
+  private fotos: Photo[] = [];
+
   darkMode: boolean = true;
+  articulo: TaskI = {
+    titulo: '',
+    descripcion: '',
+    img: '',
+    telefono: '',
+    costo: '',
+    userId: '',
+  };
+  articuloId = null;
 
   constructor(private router: Router,
-              private popoverctrl: PopoverController) { }
+    private popoverctrl: PopoverController,
+    private articuloService: ArticuloService,
+    public afSG: AngularFireStorage,
+    private camera: Camera,
+  ) { }
 
   ngOnInit() {
+    this.articulo = {
+      titulo: '',
+      descripcion: '',
+      img: '',
+      telefono: '',
+      costo: '',
+      userId: '',
+    };
   }
 
+  //se crea un nuevo articulo en la base de datos con todos los campos de la interfaz
+  addArticulo() {
+    this.articuloService.addArticulo(this.articulo).then(() => {
+      this.router.navigate(['/home/nuevoarticulo']);
+    }, err => {
+    });
+    this.articulo = {
+      titulo: '',
+      descripcion: '',
+      img: '',
+      telefono: '',
+      costo: '',
+      userId: '',
+    };
+  }
+
+  //funciones para abrir la camara
+  
+  async openLibrary() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    };
+    return await this.camera.getPicture(options);
+  }
+
+  async openCamera() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
+    return await this.camera.getPicture(options);
+  }
 
   /*programacion barra arriba popover y btn salir btn dark mode*/
-  async mostrarpop(evento){
-    
+  async mostrarpop(evento) {
+
     const popover = await this.popoverctrl.create({
       component: MorebtnComponent,
       event: evento,
@@ -31,13 +109,13 @@ export class NuevoarticuloPage implements OnInit {
 
     return await popover.present();
   }
-  
-  cerrarSesion(){
+
+  cerrarSesion() {
     this.router.navigate(['']);
     this.popoverctrl.dismiss();
   }
 
-  modoOscuro(){
+  modoOscuro() {
     this.darkMode = this.darkMode;
     document.body.classList.toggle('dark');
   }
