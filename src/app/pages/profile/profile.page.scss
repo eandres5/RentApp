@@ -1,0 +1,50 @@
+ion-list-header {
+    background-color: #ececec;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-left {
+    text-align: left;
+  }
+  
+  .placeholder-profile {
+    color: #cccccc;
+  }
+  
+  .dob-label {
+    color: #000000 !important;
+    padding: 10px !important;
+    max-width: 50% !important;
+  }
+  
+ .fileInput {
+    opacity: 0;
+    width:auto;
+    height:auto;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.fileInput   label {
+    color: white;
+    background-color: black;
+    display: inline-block;
+    cursor: pointer;
+    padding: .5em 1em;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+.imag {
+    border-radius: 30px !important;
+    padding-left: 30px !important;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+}
+
+

@@ -25,7 +25,6 @@
   </ion-grid>
   <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
     <ion-input #imageUser  type="hidden" [value]="urlImage | async" name="url"></ion-input>
-
     <form [formGroup]="profileForm" (ngSubmit)="updateProfile()"> 
       <ion-item>
         <ion-label position="floating" style="text-align: center">Ingrese Nombre</ion-label>

@@ -69,7 +69,7 @@ export class AuthService {
   //Cierre de Sesion
   logout() {
     this.AFauth.signOut().then(auth => {
-      this.router.navigate(['/home']);
+      this.router.navigate(['']);
     })
   }
   //registrar Chat
