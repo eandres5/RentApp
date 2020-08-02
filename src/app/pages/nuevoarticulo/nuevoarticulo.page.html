@@ -33,12 +33,12 @@
       <ion-input type="number" clear type="number" [(ngModel)]="articulo.costo"></ion-input>
     </ion-item>
     
-    <ion-button color="tertiary" expand="block">
+    <ion-button color="tertiary" expand="block" (click)="addPhoto('library')">
       <ion-icon name="image" slot="start"></ion-icon>
       Abrir Galeria
     </ion-button>
 
-    <ion-button color="tertiary" expand="block">
+    <ion-button color="tertiary" expand="block" (click)="addPhoto('camera')">
       <ion-icon name="camera" slot="start"></ion-icon>
       Tomar Foto
     </ion-button>
@@ -48,13 +48,11 @@
     <img>
     <ion-card>
       <ion-card-content>
-        <img>
+        <img [src]="image">
       </ion-card-content>
     </ion-card>
     <ion-button expand="block" color="tertiary" (click)="addArticulo()">Publicar</ion-button>
   </ion-card>
-
-  <ion-label>hola</ion-label>
 
   <!--
 

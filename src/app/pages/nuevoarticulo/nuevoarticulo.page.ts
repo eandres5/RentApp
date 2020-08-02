@@ -17,12 +17,16 @@ import { Photo } from 'src/app/models/foto.interface';
 })
 export class NuevoarticuloPage implements OnInit {
 
-  image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
   imagePath: string;
   upload: any;
   captureDataUrl: string;
 
   private fotos: Photo[] = [];
+
+  //variables utilizadas en la imgen
+  uploadPercent: Observable<number>;
+  urlImage: Observable<string>;
+  image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
 
   darkMode: boolean = true;
   articulo: TaskI = {
@@ -39,7 +43,8 @@ export class NuevoarticuloPage implements OnInit {
     private popoverctrl: PopoverController,
     private articuloService: ArticuloService,
     public afSG: AngularFireStorage,
-    private camera: Camera,
+    private camera: Camera
+
   ) { }
 
   ngOnInit() {
@@ -69,6 +74,40 @@ export class NuevoarticuloPage implements OnInit {
     };
   }
 
+  async addPhoto(source: string) {
+    if (source === 'camera') {
+      console.log('camera');
+      const cameraPhoto = await this.openCamera();
+      this.image = cameraPhoto;
+      console.log(this.image);
+    } else {
+      console.log('library');
+      const libraryImage = await this.openLibrary();
+      this.image = libraryImage;
+      console.log(this.image);
+    }
+
+    //const libraryImage = await this.openLibrary();
+    //this.image = 'data:image/jpg;base64,' + libraryImage;
+    //console.log(this.image);
+
+    //descomenta
+    //const id = Math.random().toString(36).substring(2);
+    //this.imagePath =  `Articulos/articulo_${id}` + '.jpg';
+
+    //const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(this.imagePath, this.file);
+    //this.upload = this.afSG.ref(this.imagePath).putString(this.image, 'data_url');
+    //this.uploadPercent = this.upload.percentageChanges();
+
+
+
+    //this.upload.snapshotChanges().pipe(finalize(() => this.urlImage = ref.getDownloadURL())).subscribe();
+
+
+    this.image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+
+
+  }
   //funciones para abrir la camara
   
   async openLibrary() {
