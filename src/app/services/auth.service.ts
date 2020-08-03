@@ -137,6 +137,39 @@ export class AuthService {
   isAuth() {
     return this.AFauth.authState.pipe(map(auth => auth));
   }
+  //actualizacion de datos usuario
+  updateNombreApellido(nombreu: String, apellidou:String){
+    this.AFauth.authState.subscribe(auth=>{
+      this.db.collection('users').doc(auth.uid).update({nombre: nombreu, 
+        apellido: apellidou
+        }).then(()=>{
+          this.isAuth().subscribe(user =>{
+            if(user){
+              user.updateProfile({
+                displayName: nombreu+" "+apellidou
+              }).then(function(){
+                console.log('User Update');
+                          
+              }).catch(function(error){
+                console.log('error',error);
+              });
+            }
+          });
+        }).catch(function(err){
+          console.log(err);
+        });
+    })
+  }
+  updatePhone(phone: number){
+    this.AFauth.authState.subscribe(auth=>{
+      this.db.collection('users').doc(auth.uid).update({telefono: phone 
+        }).then(()=>{
+          console.log("Actualizado");
+        }).catch(function(err){
+          console.log(err);
+        });
+    })
+  }
 
-
+  
 }

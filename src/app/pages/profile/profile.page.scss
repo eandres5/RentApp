@@ -15,9 +15,9 @@ ion-list-header {
   }
   
   .dob-label {
-    color: #000000 !important;
-    padding: 10px !important;
-    max-width: 50% !important;
+    color: #000000;
+    padding: 10px ;
+    max-width: 50% ;
   }
   
  .fileInput {
@@ -45,6 +45,9 @@ ion-list-header {
     border: 1px solid #ffffff;
     border-bottom: 0px !important;
     box-shadow: none !important;
+}
+.my-custom-class {
+  --background: #e5e5e5;
 }
 
 
