@@ -9,6 +9,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Photo } from 'src/app/models/foto.interface';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @Component({
   selector: 'app-nuevoarticulo',
@@ -26,7 +27,7 @@ export class NuevoarticuloPage implements OnInit {
   //variables utilizadas en la imgen
   uploadPercent: Observable<number>;
   urlImage: Observable<string>;
-  image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+  image: string;
 
   darkMode: boolean = true;
   articulo: TaskI = {
@@ -43,7 +44,8 @@ export class NuevoarticuloPage implements OnInit {
     private popoverctrl: PopoverController,
     private articuloService: ArticuloService,
     public afSG: AngularFireStorage,
-    private camera: Camera
+    private camera: Camera,
+    private webview: WebView
 
   ) { }
 
@@ -56,6 +58,7 @@ export class NuevoarticuloPage implements OnInit {
       costo: '',
       userId: '',
     };
+    this.image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
   }
 
   //se crea un nuevo articulo en la base de datos con todos los campos de la interfaz
@@ -74,12 +77,16 @@ export class NuevoarticuloPage implements OnInit {
     };
   }
 
+  //tienes que aumentar booleanos para los botones note olvides
+  //y tambien poner un boton de subir imagen
+
   async addPhoto(source: string) {
     if (source === 'camera') {
       console.log('camera');
-      const cameraPhoto = await this.openCamera();
-      this.image = cameraPhoto;
-      console.log(this.image);
+      const cameraPhoto = await this.openCamera().then((ImageData)=>{
+        this.image = this.webview.convertFileSrc(ImageData);
+        console.log(this.image);
+      });
     } else {
       console.log('library');
       const libraryImage = await this.openLibrary();
@@ -102,9 +109,6 @@ export class NuevoarticuloPage implements OnInit {
 
 
     //this.upload.snapshotChanges().pipe(finalize(() => this.urlImage = ref.getDownloadURL())).subscribe();
-
-
-    this.image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
 
 
   }
@@ -135,6 +139,36 @@ export class NuevoarticuloPage implements OnInit {
     };
     return await this.camera.getPicture(options);
   }
+
+  //en este metodo se importo webview
+  takePicture() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
+    this.camera.getPicture(options)
+      .then((ImageData) => {
+        this.image = this.webview.convertFileSrc(ImageData);
+        console.log(this.image);
+      });
+  }
+
+  //boton para cancelar todo
+  cancelar(){
+    this.articulo = {
+      titulo: '',
+      descripcion: '',
+      img: '',
+      telefono: '',
+      costo: '',
+      userId: '',
+    };
+    this.image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+  }
+
 
   /*programacion barra arriba popover y btn salir btn dark mode*/
   async mostrarpop(evento) {

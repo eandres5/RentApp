@@ -43,15 +43,17 @@
       Tomar Foto
     </ion-button>
 
-    <ion-label></ion-label>
-    <ion-label class="ion-text-wrap"></ion-label>
-    <img>
     <ion-card>
       <ion-card-content>
-        <img [src]="image">
+        <div class="flex">
+          <div class="img-box">
+            <img [src]="image">
+          </div>
+        </div>
       </ion-card-content>
     </ion-card>
-    <ion-button expand="block" color="tertiary" (click)="addArticulo()">Publicar</ion-button>
+    <ion-button style="width: 50%" color="tertiary" (click)="addArticulo()">Publicar</ion-button>
+    <ion-button color="danger" (click)="cancelar()" style="width: 50%">Cancelar</ion-button>
   </ion-card>
 
   <!--
