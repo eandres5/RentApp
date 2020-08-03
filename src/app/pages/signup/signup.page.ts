@@ -84,5 +84,8 @@ export class SignupPage implements OnInit {
   navigateLogin(){
     this.router.navigate(['login']);
   }
+  navigatePoliticas(){
+    this.router.navigate(['politicas']);
+  }
 
 }

@@ -18,20 +18,27 @@
             <ion-col size="3">
             </ion-col>
             <ion-col class="text-center">
-              <ion-avatar style="width: 150px; height: 150px;">
+              <label for="file" ><ion-avatar style="width: 150px; height: 150px;">
                 <img [src]="user.urlimage">
-              </ion-avatar>
+              </ion-avatar></label>
+              <input
+              type="file"
+              name="file"
+              id="file"
+              class="fileInput" accept=".png, .jpg" (change)='onUpload($event)'/> 
             </ion-col>
             <ion-col size="3"></ion-col>
           </ion-row>
         </ion-grid>
       </ion-label>
     </ion-item>
+    <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+    <ion-input #imageUser  type="hidden" [value]="urlImage | async" name="url"></ion-input>
     <ion-card>
       <ion-item>
         <ion-icon name="person" slot="start"></ion-icon>
         <ion-label>Nombre</ion-label>
-        <ion-button fill="outline" slot="end">Editar</ion-button>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="presentAlertPrompt()"> <ion-icon name="pencil"></ion-icon> </ion-button>
       </ion-item>
       <ion-card-content>
         {{user.nombre}} {{user.apellido}}
@@ -39,22 +46,21 @@
     </ion-card>
     <ion-card>
       <ion-item>
-        <ion-icon name="mail" slot="start"></ion-icon>
-        <ion-label>Correo electronico</ion-label>
-        <ion-button fill="outline" slot="end">Editar</ion-button>
+        <ion-icon name="call" slot="start"></ion-icon>
+        <ion-label>Celular</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="presentAlertCellphone()"> <ion-icon name="pencil"></ion-icon> </ion-button>
       </ion-item>
       <ion-card-content>
-        {{user.correo}}
+        {{user.telefono}}
       </ion-card-content>
     </ion-card>
     <ion-card>
       <ion-item>
-        <ion-icon name="call" slot="start"></ion-icon>
-        <ion-label>Celular</ion-label>
-        <ion-button fill="outline" slot="end">Editar</ion-button>
+        <ion-icon name="mail" slot="start"></ion-icon>
+        <ion-label>Correo electronico</ion-label>
       </ion-item>
       <ion-card-content>
-        {{user.telefono}}
+        {{user.correo}}
       </ion-card-content>
     </ion-card>
   </ion-list>
