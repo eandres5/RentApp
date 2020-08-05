@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/articulos"></ion-back-button>
+      <ion-title>{{ articulo.titulo }}</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-card size="width: 100%">
+        <ion-card-content>
+          <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top">
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+  </ion-card-content>
+
+  <ion-card>
+    <ion-label>
+      <h1>{{ articulo.titulo }}</h1>
+      <br>
+    </ion-label>
+
+    <ion-label>
+      <h2>Descripción del articulo</h2>
+      <p>{{articulo.descripcion}}</p>
+      <br>
+      <h2>Costo</h2>
+      <p>{{articulo.costo}} $</p>
+      <br>
+    </ion-label>
+
+    <ion-label>
+      <h2>Contacto</h2>
+      <p> 0{{articulo.telefono}}</p>
+      <br>
+    </ion-label>
+
+    <ion-button color="tertiary">Enviar mensaje</ion-button>
+  </ion-card>
+
+</ion-content>

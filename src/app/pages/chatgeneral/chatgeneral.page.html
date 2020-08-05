@@ -1,6 +1,11 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
     <ion-title>chatgeneral</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarpop($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

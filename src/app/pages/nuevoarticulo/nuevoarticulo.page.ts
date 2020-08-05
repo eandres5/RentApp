@@ -9,7 +9,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Photo } from 'src/app/models/foto.interface';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-nuevoarticulo',
@@ -21,12 +23,13 @@ export class NuevoarticuloPage implements OnInit {
   imagePath: string;
   upload: any;
   captureDataUrl: string;
+  habilitar: Boolean;
 
   private fotos: Photo[] = [];
 
   //variables utilizadas en la imgen
   uploadPercent: Observable<number>;
-  urlImage: Observable<string>;
+  downloadUrl: Observable<string>;
   image: string;
 
   darkMode: boolean = true;
@@ -45,9 +48,12 @@ export class NuevoarticuloPage implements OnInit {
     private articuloService: ArticuloService,
     public afSG: AngularFireStorage,
     private camera: Camera,
-    private webview: WebView
+    private platform: Platform,
+    private file: File
 
-  ) { }
+  ) {
+    this.habilitar = false;
+  }
 
   ngOnInit() {
     this.articulo = {
@@ -58,7 +64,7 @@ export class NuevoarticuloPage implements OnInit {
       costo: '',
       userId: '',
     };
-    this.image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+    this.habilitar = false;
   }
 
   //se crea un nuevo articulo en la base de datos con todos los campos de la interfaz
@@ -81,39 +87,83 @@ export class NuevoarticuloPage implements OnInit {
   //y tambien poner un boton de subir imagen
 
   async addPhoto(source: string) {
-    if (source === 'camera') {
-      console.log('camera');
-      const cameraPhoto = await this.openCamera().then((ImageData)=>{
-        this.image = this.webview.convertFileSrc(ImageData);
+
+    switch (source) {
+      case 'camera': {
+        console.log('camera');
+        const cameraPhoto = await this.openCamera();
+        this.image = cameraPhoto;
         console.log(this.image);
-      });
-    } else {
-      console.log('library');
-      const libraryImage = await this.openLibrary();
-      this.image = libraryImage;
-      console.log(this.image);
+
+        const fileURI = this.image;
+        let file: string;
+
+        if (this.platform.is('ios')) {
+          file = fileURI.split('/').pop();
+        } else {
+          file = fileURI.substring(fileURI.lastIndexOf('/') + 1);
+          console.log(file);
+        }
+        const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
+
+        console.log(path);
+
+        const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+        const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
+
+        const id = Math.random().toString(36).substring(2);
+        this.imagePath = `Articulos/articulo_${id}` + '.jpg';
+
+        const ref = this.afSG.ref(this.imagePath);
+        const task = ref.put(blob);
+
+        this.uploadPercent = task.percentageChanges();
+        task.snapshotChanges().pipe(
+          finalize(() => this.downloadUrl = ref.getDownloadURL())
+        ).subscribe();
+        break;
+      }
+      case 'library': {
+        console.log('library');
+        const libraryImage = await this.openLibrary();
+        this.image = libraryImage;
+        console.log(this.image);
+
+        const fileURI = this.image;
+        let file: string;
+
+        if (this.platform.is('ios')) {
+          file = fileURI.split('/').pop();
+        } else {
+          file = fileURI.substring(fileURI.lastIndexOf('/') + 1, fileURI.indexOf('?'));
+          console.log("aqui");
+          console.log(file);
+        }
+
+        const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
+
+        console.log(path);
+
+        const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+        const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
+
+        const id = Math.random().toString(36).substring(2);
+        this.imagePath = `Articulos/articulo_${id}` + '.jpg';
+
+        const ref = this.afSG.ref(this.imagePath);
+        const task = ref.put(blob);
+
+        this.uploadPercent = task.percentageChanges();
+        task.snapshotChanges().pipe(
+          finalize(() => this.downloadUrl = ref.getDownloadURL())
+        ).subscribe();
+        break;
+      }
     }
-
-    //const libraryImage = await this.openLibrary();
-    //this.image = 'data:image/jpg;base64,' + libraryImage;
-    //console.log(this.image);
-
-    //descomenta
-    //const id = Math.random().toString(36).substring(2);
-    //this.imagePath =  `Articulos/articulo_${id}` + '.jpg';
-
-    //const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(this.imagePath, this.file);
-    //this.upload = this.afSG.ref(this.imagePath).putString(this.image, 'data_url');
-    //this.uploadPercent = this.upload.percentageChanges();
-
-
-
-    //this.upload.snapshotChanges().pipe(finalize(() => this.urlImage = ref.getDownloadURL())).subscribe();
-
-
   }
-  //funciones para abrir la camara
   
+
+  //funciones para abrir la camara
   async openLibrary() {
     const options: CameraOptions = {
       quality: 100,
@@ -140,24 +190,8 @@ export class NuevoarticuloPage implements OnInit {
     return await this.camera.getPicture(options);
   }
 
-  //en este metodo se importo webview
-  takePicture() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.CAMERA
-    };
-    this.camera.getPicture(options)
-      .then((ImageData) => {
-        this.image = this.webview.convertFileSrc(ImageData);
-        console.log(this.image);
-      });
-  }
-
   //boton para cancelar todo
-  cancelar(){
+  cancelar() {
     this.articulo = {
       titulo: '',
       descripcion: '',
@@ -166,7 +200,8 @@ export class NuevoarticuloPage implements OnInit {
       costo: '',
       userId: '',
     };
-    this.image = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+    this.articulo.img = 'https://www.kasterencultuur.nl/editor/placeholder.jpg';
+    this.habilitar = false;
   }
 
 

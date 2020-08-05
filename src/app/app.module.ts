@@ -51,6 +51,7 @@ import {SmsComponent} from './pages/sms/sms.component';
 //importacion de angular
 
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -68,6 +69,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     SplashScreen,
     Camera,
     WebView,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
