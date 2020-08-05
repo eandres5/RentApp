@@ -13,5 +13,16 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item *ngFor="let chat of chatsR">
+      <ion-avatar slot="start">
+        <ion-img [src]='chat.img'></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <h2><b>{{chat.nombre}}</b></h2>
+        <p>{{chat.descripcion}}</p>
+      </ion-label>
 
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -11,7 +11,11 @@ export interface chat {
   descripcion: string
   nombre: string
   id: string
-  img: string
+  img: string,
+  users:{
+    userr:string,
+    uidp:string
+  }
 } 
 interface sms{
   users:{
@@ -32,22 +36,21 @@ export class ReadchatsService {
   public uid: string;
   public token: string;
   public usuarioen: string;
+  public chats : any =[];
   constructor(public http:HttpClient,private db: AngularFirestore, public Authservicies: AuthService) { }
   //funciones
   //obtener chats
   getChats(){
-    this.Authservicies.isAuth().subscribe(user=>{
-      this.uid= user.uid;
-    })
     return this.db.collection('chats').snapshotChanges().pipe(map(rooms =>{
       return rooms.map(a =>{
-        const data =a.payload.doc.data() as chat;
+        const data: chat =a.payload.doc.data() as chat;
         data.id= a.payload.doc.id;
         return data;
       })
     }));
     
   }
+  
   //obtener token de usuarios dentro de chat
   obtenertoken(idchat: string){
     this.db.collection("chats").doc(idchat).snapshotChanges().subscribe(
