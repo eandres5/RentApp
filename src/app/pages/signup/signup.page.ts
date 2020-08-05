@@ -55,10 +55,10 @@ export class SignupPage implements OnInit {
   }
   ingresarUsuario(){
 
-    //this.auth.registrarUsu(this.registrationForm.value['emailv'],this.registrationForm.value['passv']).then((auth)=>{
-      //this.router.navigate(['/login']);
-      //console.log(auth);
-    //}).catch(err =>console.log(err))
+    this.auth.registrarUsu(this.registrationForm.value['emailv'],this.registrationForm.value['passv']).then((auth)=>{
+      this.navigateLogin();
+      console.log(auth);
+    }).catch(err =>console.log(err));
   }
   isChecked(control: FormControl): any{
     if(control.value != true){

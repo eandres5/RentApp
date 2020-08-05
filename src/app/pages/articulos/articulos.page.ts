@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
-import { async } from '@angular/core/testing';
+import { PopoverController, Platform } from '@ionic/angular';
 import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
+import{AuthService} from '../../services/auth.service';
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx'
+
 
 @Component({
   selector: 'app-articulos',
@@ -10,10 +12,21 @@ import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
 })
 export class ArticulosPage implements OnInit {
 
-  constructor(private popoverctrl: PopoverController) { }
+  constructor(public platform: Platform,private popoverctrl: PopoverController,public Authservicies: AuthService,private fcm: FCM) { 
+    }
 
   ngOnInit() {
+    
+      this.fcm.getToken().then(token=>{
+        console.log(token);
+        this.saveToken(token);
+      });
+    
   }
+  saveToken(token){
+    this.Authservicies.updateToken(token);
+  }
+
 
   async mostrarpop(evento){
     

@@ -69,7 +69,6 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "cordova-plugin-fcm-with-dependecy-updated": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
@@ -80,7 +79,8 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-androidx": {},
-      "cordova-plugin-androidx-adapter": {}
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-fcm-with-dependecy-updated": {}
     },
     "platforms": [
       "android"

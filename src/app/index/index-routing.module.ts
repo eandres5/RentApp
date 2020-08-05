@@ -10,6 +10,8 @@ import { SignupPageModule } from '../pages/signup/signup.module';
 //guards
 import {AuthGuard} from '../guards/auth.guard';
 import {SignoutGuard} from '../guards/signout.guard';
+import {RegistroGuard} from '../guards/registro.guard';
+
 
 const routes: Routes = [
   {
@@ -31,7 +33,7 @@ const routes: Routes = [
       },
       {
         path: 'registro',
-        loadChildren: () => import('../pages/registro/registro.module').then(m => m.RegistroPageModule),canActivate:[SignoutGuard]
+        loadChildren: () => import('../pages/registro/registro.module').then(m => m.RegistroPageModule),canActivate:[RegistroGuard]
       },
       {
         path: 'politicas',

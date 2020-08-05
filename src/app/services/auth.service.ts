@@ -106,12 +106,18 @@ export class AuthService {
           } else {
             console.log("Email no verificado");
             userv.sendEmailVerification().then(function () {
-              console.log("email enviado al correo");
+              alert('Correo electronico enviado. Verifica tu cuenta!!');
+              
             });
           }
         })
 
-      }).catch(err => reject(err));
+      }).catch(err => {
+        reject(err)
+        console.log(err);
+      }
+      
+      );
     })
 
   }

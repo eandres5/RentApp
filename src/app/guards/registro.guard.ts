@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class SignoutGuard implements CanActivate {
+export class RegistroGuard implements CanActivate {
   constructor(private AFauth: AngularFireAuth, private router: Router){
 
   }
@@ -21,8 +21,14 @@ export class SignoutGuard implements CanActivate {
           return true;
         }else{
           var authe=auth;
-        var veri= authe.emailVerified;
-          if(veri==false){
+        var veri= authe.displayName;
+        var v= false;
+        if(veri==null){
+          v=false;
+        }else{
+          v=true;
+        }
+          if(v==false){
             return true;
           }else{
             this.router.navigate(['home']);
@@ -31,7 +37,6 @@ export class SignoutGuard implements CanActivate {
         }
         
       }))
-  
   }
   
 }
