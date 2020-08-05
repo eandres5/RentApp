@@ -27,12 +27,14 @@ export class ChatgeneralPage implements OnInit {
   obtenerChat(){
     
     this.chatservice.getChats().subscribe( chats=>{
-      for (let i = 0; i < chats.length; i++) {
-        if(chats[i].users.uidp=="vqBcFRlPNcX3RLokl4b6Twm5Acg1" || chats[i].users.userr=="vqBcFRlPNcX3RLokl4b6Twm5Acg1" ){
-          this.chatsR[i]=chats[i];
+      this.Authservice.isAuth().subscribe(user=>{
+        this.chatsR=[];
+        for (let i = 0; i < chats.length; i++) {
+          if(chats[i].users.uidp==user.uid || chats[i].users.userr==user.uid){
+            this.chatsR[i]=chats[i];
+          }
         }
-      }
-      console.log(this.chatsR);
+      })
     });
   }
 
