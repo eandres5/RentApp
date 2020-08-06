@@ -41,7 +41,17 @@ export class ArticuloService {
       })
     );
   }
-  
+
+  getArticuloUsu(userId: string): Observable<TaskI>{
+    console.log(userId);
+    return this.articuloCollection.doc<TaskI>(userId).valueChanges().pipe(
+      take(1),
+      map(articulo=>{
+        articulo.userId = userId;
+        return articulo;
+      })
+    );
+  }
   addArticulo(articulo: TaskI): Promise<DocumentReference>{
     return this.articuloCollection.add(articulo);
   }

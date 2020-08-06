@@ -18,9 +18,9 @@
 <ion-content>
   <ion-list>
     <ion-label>{{ articulo.userId }}</ion-label>
-    <ion-item *ngFor="let articulo of articulos">
+    <ion-item *ngFor="let articulo of articulosUsuario">
       <ion-thumbnail slot="start">
-        <img [src]=" articulo.img == ''? '/assets/noimage.png': articulo.img">
+        <img [src]=" articulo.img == ''? '/assets/images/camera.png': articulo.img">
       </ion-thumbnail>
       <ion-label>
         <h2>{{articulo.titulo}}</h2>

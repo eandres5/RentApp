@@ -15,5 +15,4 @@ export class PoliticasPage implements OnInit {
   navigateSignUp(){
     this.router.navigate(['signup']);
   }
-
 }
