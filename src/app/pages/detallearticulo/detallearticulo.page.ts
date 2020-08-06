@@ -4,6 +4,7 @@ import { PopoverController, AlertController, ToastController } from '@ionic/angu
 import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
 import { TaskI } from 'src/app/models/task.interface';
 import { ArticuloService } from 'src/app/services/articulo.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-detallearticulo',
@@ -24,6 +25,7 @@ export class DetallearticuloPage implements OnInit {
   };
 
   articulos: TaskI[];
+  idu: string;
 
   textoBuscar: String = '';
   textoArticulo: String = '';
@@ -33,12 +35,17 @@ export class DetallearticuloPage implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private articuloService: ArticuloService,
     public alertController: AlertController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private auth:AuthService
     
   ) { }
 
   ngOnInit() {
     this.articuloService.getArticulos().subscribe(res=> this.articulos =res);
+    this.auth.isAuth().subscribe(user=>{
+      this.idu=user.uid;
+      this.articulo.userId=this.idu;
+    });
   }
 
   editararticulo(id: string){
