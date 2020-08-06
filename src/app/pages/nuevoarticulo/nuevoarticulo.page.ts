@@ -76,6 +76,8 @@ export class NuevoarticuloPage implements OnInit {
 
   //se crea un nuevo articulo en la base de datos con todos los campos de la interfaz
   addArticulo() {
+
+    console.log(this.articulo);
     this.articuloService.addArticulo(this.articulo).then(() => {
       this.router.navigate(['/home/nuevoarticulo']);
     }, err => {
