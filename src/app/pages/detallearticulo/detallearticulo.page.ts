@@ -25,6 +25,8 @@ export class DetallearticuloPage implements OnInit {
   };
 
   articulos: TaskI[];
+  articulosUsuario: [];
+
   idu: string;
 
   textoBuscar: String = '';
@@ -41,15 +43,26 @@ export class DetallearticuloPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.articuloService.getArticulos().subscribe(res=> this.articulos =res);
+    
     this.auth.isAuth().subscribe(user=>{
       this.idu=user.uid;
       this.articulo.userId=this.idu;
+      console.log(this.idu);
+      this.articulosUsu(this.idu);
+
     });
+
   }
 
   editararticulo(id: string){
     this.router.navigate(['home/articuloeditar/' + id]);
+  }
+
+  articulosUsu(id: string){
+    this.articuloService.getArticuloUsu(id).subscribe(res=>{
+      console.log(res);
+    });
+
   }
 
   async eliminarArticulo(id: string){
