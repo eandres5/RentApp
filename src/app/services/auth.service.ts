@@ -73,7 +73,8 @@ export class AuthService {
     })
   }
   //registrar Chat
-  registrarChat(nombre: string, detalle: string, img: string) {
+  registrarChat(nombre: string, detalle: string, img: string, idp:string) {
+    console.log("entro a registrar chat");
     this.isAuth().subscribe(user => {
       var userid = user.uid;
       this.db.collection('chats').add({
@@ -81,7 +82,8 @@ export class AuthService {
         descripcion: detalle,
         img: img,
         users: {
-          userr: userid
+          userr: userid,
+          uidp: idp
         }
       })
 

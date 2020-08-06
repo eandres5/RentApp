@@ -41,6 +41,9 @@ export class ReadchatsService {
   //funciones
   //obtener chats
   getChats(){
+    this.Authservicies.isAuth().subscribe(user=>{
+      this.uid= user.uid;
+    })
     return this.db.collection('chats').snapshotChanges().pipe(map(rooms =>{
       return rooms.map(a =>{
         const data: chat =a.payload.doc.data() as chat;
@@ -75,12 +78,13 @@ export class ReadchatsService {
       const data3 : user = usu.payload.data() as user;
         var token= data3.token;
         this.token= token;
-        console.log(token);
     })
   }
   //obtencion de chats individualmente
   getChatRoom(idchat: string){
-    this.obtenertoken(idchat);
+    console.log(idchat);
+    var id= idchat;
+    this.obtenertoken(id);
     return this.db.collection('chats').doc(idchat).valueChanges();
   }
 //envio de mensaje y notificacion a usuarios

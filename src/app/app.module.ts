@@ -52,10 +52,11 @@ import {SmsComponent} from './pages/sms/sms.component';
 
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { File } from '@ionic-native/file/ngx';
+import {ChatComponent} from 'src/app/components/chat/chat.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent,ChatComponent],
+  entryComponents: [AppComponent,ChatComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,

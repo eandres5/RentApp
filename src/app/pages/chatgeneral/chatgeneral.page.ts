@@ -14,6 +14,8 @@ export interface chat {
 import { PopoverController } from '@ionic/angular';
 import { async } from '@angular/core/testing';
 import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
+import {ChatComponent} from 'src/app/components/chat/chat.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-chatgeneral',
@@ -23,7 +25,7 @@ import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
 export class ChatgeneralPage implements OnInit {
   public chatsR : any =[];
   public to: string;
-  constructor(private popoverctrl: PopoverController,public Authservice: AuthService, public chatservice: ReadchatsService) { }
+  constructor(private popoverctrl: PopoverController,public Authservice: AuthService, public chatservice: ReadchatsService,private modal:ModalController ) { }
 
 
 
@@ -56,4 +58,14 @@ export class ChatgeneralPage implements OnInit {
 
     return await popover.present();
   }
+
+  openchat(chat){
+    this.modal.create({
+      component: ChatComponent, 
+      componentProps :{
+        chat : chat
+      }
+    }).then((modal)=> modal.present());
+  }
+
 }

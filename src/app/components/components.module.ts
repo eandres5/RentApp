@@ -7,6 +7,7 @@ import { MorebtnComponent } from './morebtn/morebtn.component';
 
 
 
+
 @NgModule({
   declarations: [SlidesComponent, StartComponent, LogoComponent, MorebtnComponent],
   exports: [ SlidesComponent, StartComponent, LogoComponent, MorebtnComponent ],
