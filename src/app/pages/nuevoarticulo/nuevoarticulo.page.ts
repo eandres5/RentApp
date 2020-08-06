@@ -11,7 +11,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Photo } from 'src/app/models/foto.interface';
 import { File } from '@ionic-native/file/ngx';
 import { finalize } from 'rxjs/operators';
-
+import {AuthService} from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-nuevoarticulo',
@@ -24,6 +24,7 @@ export class NuevoarticuloPage implements OnInit {
   upload: any;
   captureDataUrl: string;
   habilitar: Boolean;
+  idu: string
 
   private fotos: Photo[] = [];
 
@@ -49,13 +50,18 @@ export class NuevoarticuloPage implements OnInit {
     public afSG: AngularFireStorage,
     private camera: Camera,
     private platform: Platform,
-    private file: File
+    private file: File,
+    private auth:AuthService
 
   ) {
     this.habilitar = false;
   }
 
   ngOnInit() {
+    this.auth.isAuth().subscribe(user=>{
+      this.idu=user.uid;
+      this.articulo.userId=this.idu;
+    });
     this.articulo = {
       titulo: '',
       descripcion: '',
@@ -64,6 +70,7 @@ export class NuevoarticuloPage implements OnInit {
       costo: '',
       userId: '',
     };
+    console.log(this.articulo.userId);
     this.habilitar = false;
   }
 
@@ -226,5 +233,8 @@ export class NuevoarticuloPage implements OnInit {
   modoOscuro() {
     this.darkMode = this.darkMode;
     document.body.classList.toggle('dark');
+  }
+  idUser(){
+    
   }
 }

@@ -25,7 +25,7 @@ export class SignoutGuard implements CanActivate {
           if(veri==false){
             return true;
           }else{
-            this.router.navigate(['home']);
+            this.router.navigate(['home/articulos']);
             return false;
           }
         }
