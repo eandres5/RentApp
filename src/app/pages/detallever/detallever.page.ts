@@ -68,6 +68,7 @@ export class DetalleverPage implements OnInit {
           if(this.c.length==0){
             console.log("no existe chat");
             this.auth.registrarChat(this.articulo.titulo,this.articulo.descripcion,this.articulo.img,this.articulo.userId);
+            this.router.navigate(['home/chatgeneral']);
           }else{
             console.log("existe chat");
             this.router.navigate(['home/chatgeneral']);
