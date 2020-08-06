@@ -8,7 +8,7 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-item>
-    <ion-searchbar type="text" ></ion-searchbar>
+    <ion-searchbar type="text"></ion-searchbar>
   </ion-item>
   <!--
     (ionChange)="buscar($event)"
@@ -23,23 +23,16 @@
     <!--El pipe se le importa en pagina.module.ts para que funcione
       *ngFor="let articulo of articulos | filtro: textoBuscar"
     -->
-    <ion-item>
+    <ion-item *ngFor="let articulo of articulos" (click)="detalles(articulo.id)">
       <ion-thumbnail slot="start">
-        <!--
-          <img [src]=" articulo.img == ''? '/assets/noimage.png': articulo.img" [routerLink]="'/detalles/' + articulo.id ">
-        -->
-
+        <img [src]=" articulo.img == ''? '/assets/images/camera.png': articulo.img">
       </ion-thumbnail>
       <ion-label>
-        <!--
-          <h2>{{articulo.titulo}}</h2>
+        <h2>{{articulo.titulo}}</h2>
         <p>{{articulo.descripcion}}</p>
         <p>Valor: {{articulo.costo}} $</p>
-        -->
-
       </ion-label>
     </ion-item>
-
   </ion-list>
 
 </ion-content>

@@ -32,29 +32,62 @@
       <ion-label position="floating">Costo</ion-label>
       <ion-input type="number" clear type="number" [(ngModel)]="articulo.costo"></ion-input>
     </ion-item>
-    
-    <ion-button color="tertiary" expand="block">
-      <ion-icon name="image" slot="start"></ion-icon>
-      Abrir Galeria
-    </ion-button>
 
-    <ion-button color="tertiary" expand="block">
-      <ion-icon name="camera" slot="start"></ion-icon>
-      Tomar Foto
-    </ion-button>
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-6>
+          <ion-button color="tertiary" size="50%" (click)="addPhoto('camera')">
+            <ion-icon name="camera" slot="start"></ion-icon>
+            Tomar Foto
+          </ion-button>
+        </ion-col>
+        <ion-col col-6>
+          <ion-button color="tertiary" size="50%" expand="block" (click)="addPhoto('library')">
+            <ion-icon name="image" slot="start"></ion-icon>
+            Galeria
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-    <ion-label></ion-label>
-    <ion-label class="ion-text-wrap"></ion-label>
-    <img>
-    <ion-card>
-      <ion-card-content>
-        <img>
-      </ion-card-content>
-    </ion-card>
-    <ion-button expand="block" color="tertiary" (click)="addArticulo()">Publicar</ion-button>
+    <ion-item>
+      <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+      <ion-input [value]="downloadUrl | async" name="url" [(ngModel)]="articulo.img"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-card size="width: 100%">
+        <ion-card-content>
+          <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top">
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-2>
+        </ion-col>
+        <ion-col col-8>
+          <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="addArticulo()"
+            [btnDisabled]="habilitar">Publicar
+          </ion-button>
+        </ion-col>
+        <ion-col col-2>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-2>
+        </ion-col>
+        <ion-col col-8>
+          <ion-button color="danger" (click)="cancelar()" style="width: 100%; position: center;">Cancelar
+          </ion-button>
+        </ion-col>
+        <ion-col col-2>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card>
-
-  <ion-label>hola</ion-label>
 
   <!--
 
