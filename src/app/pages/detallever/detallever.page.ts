@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArticuloService } from 'src/app/services/articulo.service';
 import { TaskI } from 'src/app/models/task.interface';
 import {AuthService} from 'src/app/services/auth.service';
+import {ReadchatsService} from 'src/app/services/readchats.service';
 
 @Component({
   selector: 'app-detallever',
@@ -10,6 +11,8 @@ import {AuthService} from 'src/app/services/auth.service';
   styleUrls: ['./detallever.page.scss'],
 })
 export class DetalleverPage implements OnInit {
+  public chatsR : any =[];
+  public c: any =[];
 
   articulo: TaskI = {
     id: '',
@@ -23,7 +26,7 @@ export class DetalleverPage implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private articuloService: ArticuloService,
-              private auth:AuthService,
+              private auth:AuthService,public chatservice: ReadchatsService,
               private router: Router) { }
 
   ngOnInit() {
@@ -44,8 +47,34 @@ export class DetalleverPage implements OnInit {
   }
 
   registrarChat(){
-    this.auth.registrarChat(this.articulo.titulo,this.articulo.descripcion,this.articulo.img,this.articulo.userId);
-    this.router.navigate(['home/chatgeneral']);
+    this.obtenerChat(this.articulo.titulo,this.articulo.descripcion,this.articulo.img);
+  }
+  obtenerChat(nombre: string, detalle:string, img:string){
+    this.chatservice.getChats().subscribe( chats=>{
+      this.auth.isAuth().subscribe(user=>{
+        this.chatsR=[];
+        for (let i = 0; i < chats.length; i++) {
+          if(chats[i].users.uidp==user.uid 
+            || chats[i].users.userr==user.uid){
+            this.chatsR[i]=chats[i];
+          }
+        }
+        this.c=[];
+        for(let i=0; i<this.chatsR.length;i++){
+          if(this.chatsR[i].nombre==nombre&&this.chatsR[i].img==img){
+            console.log(this.chatsR[i].nombre);
+            this.c[0]=this.chatsR[i];
+          }
+          if(this.c.length==0){
+            console.log("no existe chat");
+            this.auth.registrarChat(this.articulo.titulo,this.articulo.descripcion,this.articulo.img,this.articulo.userId);
+          }else{
+            console.log("existe chat");
+            this.router.navigate(['home/chatgeneral']);
+          }
+        }
+      })
+    });
   }
 
 }
