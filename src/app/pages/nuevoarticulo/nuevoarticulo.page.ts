@@ -24,7 +24,7 @@ export class NuevoarticuloPage implements OnInit {
   upload: any;
   captureDataUrl: string;
   habilitar: Boolean;
-  idu: string
+  public idu: string
 
   private fotos: Photo[] = [];
 
@@ -70,7 +70,6 @@ export class NuevoarticuloPage implements OnInit {
       costo: '',
       userId: '',
     };
-    console.log(this.articulo.userId);
     this.habilitar = false;
   }
 
