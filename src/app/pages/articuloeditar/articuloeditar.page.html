@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/detallearticulo"></ion-back-button>
+      <ion-title></ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input clear type="text" required [(ngModel)]="articulo.titulo"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
+      <ion-textarea clear rows="3" type="text" [(ngModel)]="articulo.descripcion"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Télefono</ion-label>
+      <ion-input clear type="text" required [(ngModel)]="articulo.telefono"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Costo</ion-label>
+      <ion-input clear type="text" required [(ngModel)]="articulo.costo"></ion-input>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-6>
+          <ion-button color="tertiary" size="50%" (click)="addPhoto('camera')">
+            <ion-icon name="camera" slot="start"></ion-icon>
+            Tomar Foto
+          </ion-button>
+        </ion-col>
+        <ion-col col-6>
+          <ion-button color="tertiary" size="50%" expand="block" (click)="addPhoto('library')">
+            <ion-icon name="image" slot="start"></ion-icon>
+            Galeria
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+    <ion-input #imageUser type="hidden" [value]="urlImage | async" name="url" [(ngModel)]="articulo.img"></ion-input>
+    <ion-card>
+      <ion-card-content>
+        <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top">
+      </ion-card-content>
+    </ion-card>
+    <ion-button expand="block" *ngIf="urlImage | async; else btnDisabled" (click)="editarArticulo()">Guardar Cambios
+    </ion-button>
+
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-2>
+        </ion-col>
+        <ion-col col-8>
+          <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="guardarcambios()"
+            [btnDisabled]="habilitar">Guardar Cambios
+          </ion-button>
+        </ion-col>
+        <ion-col col-2>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+  
+</ion-content>

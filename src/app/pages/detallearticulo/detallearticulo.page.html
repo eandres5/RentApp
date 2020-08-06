@@ -16,6 +16,18 @@
 </ion-header>
 
 <ion-content>
-
-  
+  <ion-list>
+    <ion-item *ngFor="let articulo of articulos">
+      <ion-thumbnail slot="start">
+        <img [src]=" articulo.img == ''? '/assets/noimage.png': articulo.img">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{articulo.titulo}}</h2>
+        <p>{{articulo.descripcion}}</p>
+        <p>Valor: {{articulo.costo}} $</p>
+        <ion-button slot="end" color="tertiary" (click)="editararticulo(articulo.id)">Editar <ion-icon name="clipboard"></ion-icon></ion-button>
+        <ion-button slot="end" color="danger"  (click)="eliminarArticulo(articulo.id)">Eliminar <ion-icon name="trash"></ion-icon></ion-button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
