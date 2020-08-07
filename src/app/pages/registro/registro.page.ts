@@ -14,7 +14,10 @@ import { finalize } from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
 //Formulario
 import {FormBuilder, Validators, FormGroup, Form, FormControl} from '@angular/forms';
-
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Photo } from 'src/app/models/foto.interface';
+import { File } from '@ionic-native/file/ngx';
+import { AlertController , Platform} from '@ionic/angular';
 
 @Component({
   selector: 'app-registro',
@@ -64,9 +67,23 @@ export class RegistroPage implements OnInit {
 //observable para imagen
   uploadPercent: Observable<number>;
   urlImage: Observable<string>;
-  constructor(private formBuilder: FormBuilder, private auth: AuthService, private db: AngularFirestore, private authF: AngularFireAuth, private router: Router, private storage: AngularFireStorage) { }
+  imagePath: string;
+  iduser: string;
+  constructor(private camera: Camera,
+    private platform: Platform,
+    private file: File,
+    public alertController: AlertController,
+    private formBuilder: FormBuilder, 
+    private auth: AuthService, 
+    private db: AngularFirestore, 
+    private authF: AngularFireAuth, 
+    private router: Router, 
+    private storage: AngularFireStorage) { }
 
   ngOnInit() {
+    this.auth.isAuth().subscribe(user=>{
+      this.iduser=user.uid;
+    })
   }
   //carga de imagen en Firestorage
   onUpload(e){
@@ -105,6 +122,7 @@ export class RegistroPage implements OnInit {
       urlimage: this.image
       }).then(()=>{
         this.auth.isAuth().subscribe(user =>{
+
           if(user){
             user.updateProfile({
               displayName: this.profileForm.value['nombrev']+" "+this.profileForm.value['apellidov'],
@@ -125,5 +143,164 @@ export class RegistroPage implements OnInit {
   })
   
 }
+async addPhoto(source: string) {
+
+  switch (source) {
+    case 'camera': {
+      console.log('camera');
+      const cameraPhoto = await this.openCamera();
+      this.image = cameraPhoto;
+      console.log(this.image);
+
+      const fileURI = this.image;
+      let file: string;
+
+      if (this.platform.is('ios')) {
+        file = fileURI.split('/').pop();
+      } else {
+        file = fileURI.substring(fileURI.lastIndexOf('/') + 1);
+        console.log(file);
+      }
+      const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
+
+      console.log(path);
+
+      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+      const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
+      const id = this.iduser;
+      console.log(id);
+      this.imagePath = `Perfiles/profile_${id}` + '.jpg';
+
+      const ref = this.storage.ref(this.imagePath);
+      const task = ref.put(blob);
+
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe(
+        finalize(() => this.urlImage = ref.getDownloadURL())
+      ).subscribe();
+      task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+        console.log("Imagen subida");
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url=>{
+          if(url){
+            console.log(url);
+            this.image = url;
+          }
+        });
+      })
+
+      break;
+    }
+    case 'library': {
+      console.log('library');
+      const libraryImage = await this.openLibrary();
+      this.image = libraryImage;
+      console.log(this.image);
+
+      const fileURI = this.image;
+      let file: string;
+
+      if (this.platform.is('ios')) {
+        file = fileURI.split('/').pop();
+      } else {
+        file = fileURI.substring(fileURI.lastIndexOf('/') + 1, fileURI.indexOf('?'));
+        console.log("aqui");
+        console.log(file);
+      }
+
+      const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
+
+      console.log(path);
+
+      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+      const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
+
+      const id = this.iduser;
+      console.log(id);
+      this.imagePath = `Perfiles/profile_${id}` + '.jpg';
+
+      const ref = this.storage.ref(this.imagePath);
+      const task = ref.put(blob);
+
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe(
+        finalize(() => this.urlImage = ref.getDownloadURL())
+      ).subscribe();
+      task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+        console.log("Imagen subida");
+        const downloadURL = ref.getDownloadURL();
+        downloadURL.subscribe(url=>{
+          if(url){
+            console.log(url);
+            this.image = url;
+          }
+        });
+      })
+      break;
+    }
+  }
+}
+
+
+//funciones para abrir la camara
+async openLibrary() {
+  const options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.FILE_URI,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE,
+    targetWidth: 1000,
+    targetHeight: 1000,
+    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+  };
+  return await this.camera.getPicture(options);
+}
+
+async openCamera() {
+  const options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.FILE_URI,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE,
+    targetWidth: 1000,
+    targetHeight: 1000,
+    sourceType: this.camera.PictureSourceType.CAMERA
+  };
+  return await this.camera.getPicture(options);
+}
+
+async presentAlertCamera() {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    message: '<strong>Seleccione:</strong>!!!',
+    buttons: [
+       {
+        text: 'Camara',
+        handler: () => {
+          console.log('Camara');
+          this.addPhoto('camera');
+        }
+      },
+      {
+        text: 'Galeria',
+        handler: () => {
+          console.log('Galeria');
+          this.addPhoto('library');
+        }
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          console.log('Confirm Cancel: blah');
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
 }

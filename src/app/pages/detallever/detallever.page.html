@@ -44,13 +44,16 @@
     <ion-grid>
       <ion-row justify-content-center align-items-end style="height:100%">
         <ion-col col-2>
-        </ion-col>
-        <ion-col col-8>
           <ion-button expand="block" color="primary" style="width: 100%; position: center;"
             [btnDisabled]="habilitar" (click)="registrarChat()"> Mensaje <ion-icon name="chatbubbles-outline"></ion-icon>
           </ion-button>
         </ion-col>
+        <ion-col>
+        </ion-col>
         <ion-col col-2>
+          <ion-button expand="block" color="primary" style="width: 100%; position: center;"
+            [btnDisabled]="habilitar" (click)="navigatePerfil(articulo.id)"> Perfil Usuario <ion-icon name="person-circle"></ion-icon>
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -35,7 +35,7 @@ const routes: Routes = [
         path: 'articuloeditar/:id',
         loadChildren: () => import('../pages/articuloeditar/articuloeditar.module').then( m => m.ArticuloeditarPageModule)},
       {
-        path: 'showprofile',
+        path: 'showprofile/:id',
         loadChildren: () => import('../pages/showprofile/showprofile.module').then( m => m.ShowprofilePageModule)
       },
     ]

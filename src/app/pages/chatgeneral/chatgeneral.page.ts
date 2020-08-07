@@ -33,7 +33,6 @@ export class ChatgeneralPage implements OnInit {
     this.obtenerChat();
   }
   obtenerChat(){
-    
     this.chatservice.getChats().subscribe( chats=>{
       this.Authservice.isAuth().subscribe(user=>{
         this.chatsR=[];

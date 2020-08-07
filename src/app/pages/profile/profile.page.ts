@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {AuthService} from '../../services/auth.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController , Platform} from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireStorage} from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Photo } from 'src/app/models/foto.interface';
+import { File } from '@ionic-native/file/ngx';
+
 interface user{
+  uid:string,
   nombre: string,
   apellido: string,
   celular: string,
@@ -20,11 +25,17 @@ interface user{
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  imagePath: string;
   public usersR : any =[];
   public image: string;
   uploadPercent: Observable<number>;
   urlImage: Observable<string>;
-  constructor(private router: Router, private auth: AuthService,public alertController: AlertController,private storage: AngularFireStorage, private db: AngularFirestore, private authF: AngularFireAuth) { }
+  constructor(private camera: Camera,
+    private platform: Platform,
+    private file: File,
+    private router: Router, private auth: AuthService,public alertController: AlertController,
+    private storage: AngularFireStorage, 
+    private db: AngularFirestore, private authF: AngularFireAuth) { }
 
   ngOnInit() {
     //inicia datos usuario
@@ -139,32 +150,6 @@ export class ProfilePage implements OnInit {
     await alerta.present();
   }
   //Subir imagen a FirebaseStorage
-  onUpload(e){
-    //Obtencion de Usuario Logueado
-    this.auth.isAuth().subscribe(user=>{
-      //Constante con el evento de imagen
-      const file = e.target.files[0];
-    const filePath = `Perfiles/profile_${user.uid}`;
-    const ref= this.storage.ref(filePath);
-    //Guarda la imagen en el Storage
-    const task = this.storage.upload(filePath, file);
-    //Porcentaje de subida de imagen
-    this.uploadPercent = task.percentageChanges();
-    task.snapshotChanges().pipe(finalize(()=> this.urlImage = ref.getDownloadURL())).subscribe();
-    task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
-      console.log("Imagen subida");
-      const downloadURL = ref.getDownloadURL();
-      downloadURL.subscribe(url=>{
-        if(url){
-          console.log(url);
-          this.image = url;
-          this.updateImage();
-        }
-      });
-    })
-  })
- 
-  }
   //Actualizacion de imagen dentro de Firebase database y user
   updateImage(){
     this.authF.authState.subscribe(auth=>{
@@ -187,5 +172,167 @@ export class ProfilePage implements OnInit {
         });
     })
   }
+
+  async addPhoto(source: string) {
+
+    switch (source) {
+      case 'camera': {
+        console.log('camera');
+        const cameraPhoto = await this.openCamera();
+        this.image = cameraPhoto;
+        console.log(this.image);
+
+        const fileURI = this.image;
+        let file: string;
+
+        if (this.platform.is('ios')) {
+          file = fileURI.split('/').pop();
+        } else {
+          file = fileURI.substring(fileURI.lastIndexOf('/') + 1);
+          console.log(file);
+        }
+        const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
+
+        console.log(path);
+
+        const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+        const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
+        const id = this.usersR[0].uid;
+        console.log(id);
+        this.imagePath = `Perfiles/profile_${id}` + '.jpg';
+
+        const ref = this.storage.ref(this.imagePath);
+        const task = ref.put(blob);
+
+        this.uploadPercent = task.percentageChanges();
+        task.snapshotChanges().pipe(
+          finalize(() => this.urlImage = ref.getDownloadURL())
+        ).subscribe();
+        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+          console.log("Imagen subida");
+          const downloadURL = ref.getDownloadURL();
+          downloadURL.subscribe(url=>{
+            if(url){
+              console.log(url);
+              this.image = url;
+              this.updateImage();
+            }
+          });
+        })
+
+        break;
+      }
+      case 'library': {
+        console.log('library');
+        const libraryImage = await this.openLibrary();
+        this.image = libraryImage;
+        console.log(this.image);
+
+        const fileURI = this.image;
+        let file: string;
+
+        if (this.platform.is('ios')) {
+          file = fileURI.split('/').pop();
+        } else {
+          file = fileURI.substring(fileURI.lastIndexOf('/') + 1, fileURI.indexOf('?'));
+          console.log("aqui");
+          console.log(file);
+        }
+
+        const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
+
+        console.log(path);
+
+        const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+        const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
+
+        const id = this.usersR[0].uid;
+        console.log(id);
+        this.imagePath = `Perfiles/profile_${id}` + '.jpg';
+
+        const ref = this.storage.ref(this.imagePath);
+        const task = ref.put(blob);
+
+        this.uploadPercent = task.percentageChanges();
+        task.snapshotChanges().pipe(
+          finalize(() => this.urlImage = ref.getDownloadURL())
+        ).subscribe();
+        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+          console.log("Imagen subida");
+          const downloadURL = ref.getDownloadURL();
+          downloadURL.subscribe(url=>{
+            if(url){
+              console.log(url);
+              this.image = url;
+              this.updateImage();
+            }
+          });
+        })
+        break;
+      }
+    }
+  }
+  
+
+  //funciones para abrir la camara
+  async openLibrary() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    };
+    return await this.camera.getPicture(options);
+  }
+
+  async openCamera() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
+    return await this.camera.getPicture(options);
+  }
+
+  async presentAlertCamera() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      message: '<strong>Seleccione:</strong>!!!',
+      buttons: [
+         {
+          text: 'Camara',
+          handler: () => {
+            console.log('Camara');
+            this.addPhoto('camera');
+          }
+        },
+        {
+          text: 'Galeria',
+          handler: () => {
+            console.log('Galeria');
+            this.addPhoto('library');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
 }

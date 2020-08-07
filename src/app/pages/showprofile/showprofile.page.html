@@ -1,9 +1,58 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>showprofile</ion-title>
-  </ion-toolbar>
+  <ion-toolbar color="tertiary">
+  <ion-title>Perfil</ion-title>
+  <ion-buttons slot="start">
+    <ion-button (click)="navigateArticulo()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
 </ion-header>
-
-<ion-content>
-
+  
+<ion-content padding>
+  <ion-list *ngFor="let user of usersR">
+    <ion-item >
+      <ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3">
+            </ion-col>
+            <ion-col class="text-center">
+              <label for="file" ><ion-avatar style="width: 150px; height: 150px;">
+                <img [src]="user.urlimage">
+              </ion-avatar></label>
+            </ion-col>
+            <ion-col size="3"></ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+    </ion-item>
+    <ion-card>
+      <ion-item>
+        <ion-icon name="person" slot="start"></ion-icon>
+        <ion-label>Nombre</ion-label>
+      </ion-item>
+      <ion-card-content>
+        {{user.nombre}} {{user.apellido}}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-item>
+        <ion-icon name="call" slot="start"></ion-icon>
+        <ion-label>Celular</ion-label>
+      </ion-item>
+      <ion-card-content>
+        {{user.telefono}}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-item>
+        <ion-icon name="mail" slot="start"></ion-icon>
+        <ion-label>Correo electronico</ion-label>
+      </ion-item>
+      <ion-card-content>
+        {{user.correo}}
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
 </ion-content>

@@ -65,17 +65,20 @@ export class DetalleverPage implements OnInit {
             console.log(this.chatsR[i].nombre);
             this.c[0]=this.chatsR[i];
           }
-          if(this.c.length==0){
-            console.log("no existe chat");
-            this.auth.registrarChat(this.articulo.titulo,this.articulo.descripcion,this.articulo.img,this.articulo.userId);
-            this.router.navigate(['home/chatgeneral']);
-          }else{
-            console.log("existe chat");
-            this.router.navigate(['home/chatgeneral']);
-          }
+        }
+        if(this.c.length==0){
+          console.log("no existe chat");
+          this.auth.registrarChat(this.articulo.titulo,this.articulo.descripcion,this.articulo.img,this.articulo.userId);
+          this.router.navigate(['home/chatgeneral']);
+        }else{
+          console.log("existe chat");
+          this.router.navigate(['home/chatgeneral']);
         }
       })
     });
+  }
+  navigatePerfil(id: string){
+    this.router.navigate(['home/showprofile/' + id]);
   }
 
 }

@@ -18,14 +18,9 @@
             <ion-col size="3">
             </ion-col>
             <ion-col class="text-center">
-              <label for="file" ><ion-avatar style="width: 150px; height: 150px;">
+              <label (click)="presentAlertCamera()"><ion-avatar style="width: 150px; height: 150px;">
                 <img [src]="user.urlimage">
               </ion-avatar></label>
-              <input
-              type="file"
-              name="file"
-              id="file"
-              class="fileInput" accept=".png, .jpg" (change)='onUpload($event)'/> 
             </ion-col>
             <ion-col size="3"></ion-col>
           </ion-row>

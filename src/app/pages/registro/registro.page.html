@@ -12,12 +12,7 @@
       <ion-col >
       </ion-col>
       <ion-col class="ion-align-self-center">
-        <label for="file" ><img src="assets/images/camera.png" /></label>
-        <input
-            type="file"
-            name="file"
-            id="file"
-            class="fileInput" accept=".png, .jpg" (change)='onUpload($event)'/>  
+        <label (click)="presentAlertCamera()" ><img src="assets/images/camera.png" /></label>  
       </ion-col>
       <ion-col >
       </ion-col>
