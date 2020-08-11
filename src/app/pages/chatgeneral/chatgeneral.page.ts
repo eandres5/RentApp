@@ -36,9 +36,11 @@ export class ChatgeneralPage implements OnInit {
     this.chatservice.getChats().subscribe( chats=>{
       this.Authservice.isAuth().subscribe(user=>{
         this.chatsR=[];
+        var cont=0;
         for (let i = 0; i < chats.length; i++) {
           if(chats[i].users.uidp==user.uid || chats[i].users.userr==user.uid){
-            this.chatsR[i]=chats[i];
+            this.chatsR[cont]=chats[i];
+            cont++;
           }
         }
       })

@@ -36,13 +36,14 @@ export class ArticulosPage implements OnInit {
               private fcm:FCM,public Authservicies: AuthService) { }
 
   ngOnInit() {
+    
     this.articuloService.getArticulos().subscribe(res=> {
       this.articulos = res;
     });
-    this.fcm.getToken().then(token=>{
+    /*this.fcm.getToken().then(token=>{
       console.log(token);
       this.saveToken(token);
-    });
+    });*/
 
   }
   saveToken(token){

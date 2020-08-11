@@ -43,6 +43,7 @@ export class ProfilePage implements OnInit {
   }
   //funcion para obtener datos usuario
   datosUsuario(){
+    this.usersR=[];
     this.auth.isAuth().subscribe(us=>{
      this.auth.obtenernombreUsuario(us.uid).subscribe(usa=>{
        const data2 : user = usa.payload.data() as user;

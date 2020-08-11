@@ -5,13 +5,14 @@
 export const environment = {
   production: false,
   firebaseConfig  : {
-    apiKey: "AIzaSyDNecYG85VZwP-ZFAekvyOkpLaGMQ6sffg",
-    authDomain: "chat-b9b32.firebaseapp.com",
-    databaseURL: "https://chat-b9b32.firebaseio.com",
-    projectId: "chat-b9b32",
-    storageBucket: "chat-b9b32.appspot.com",
-    messagingSenderId: "628880409171",
-    appId: "1:628880409171:web:f5f0e07215defb7b"
+    apiKey: "AIzaSyD86x-0Ucm5sg6ea9QikFOm95V5ZIpVUtM",
+    authDomain: "rentappecu.firebaseapp.com",
+    databaseURL: "https://rentappecu.firebaseio.com",
+    projectId: "rentappecu",
+    storageBucket: "rentappecu.appspot.com",
+    messagingSenderId: "629670861840",
+    appId: "1:629670861840:web:eb88c944a1b3e12f42fe95",
+    measurementId: "G-J98WR6QQY2"
   }
 };
 

@@ -100,7 +100,7 @@ export class ReadchatsService {
   //envio de notificaciones con la utilizacion de api FCM y metodo post.
   sendNotifi(sms: string, nombre: string){
     console.log("entro a la funcion"+ sms + nombre+ this.token);
-          let options = {headers: new HttpHeaders({'Authorization': 'key=AAAAkmwxglM:APA91bFu2i8ZGtKeNU1-GIE01xXSf94nzXaSfKbi98N9ftmBgGP2Dwct_hybaWl22HYBJAnh1bzRPZ-0MZc8YoFuMaqghFoR0RSZwPQRCUin4zwQ7cF6hUwjK3bDXU7NWG2nMs5dGKDu',
+          let options = {headers: new HttpHeaders({'Authorization': 'key=AAAAkptO3BA:APA91bFn2799tCDyL7TXPwMUaPeFo5p2_WyL49jyUbmj3WZb-DwIhhvnNClL6DLgeo769XsosUs9lXqDj2pWjqtP3pATpCWqVifywm7Tu6hazA0A-0f0RflQ9juUcERpHrz-Gqnv_oxM',
            'Content-Type': 'application/json' })}
            //estructura de notificacion.
           let notification = {

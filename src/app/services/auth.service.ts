@@ -3,7 +3,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
-
 //interface de usuarios
 
 interface usuarioss {
@@ -27,8 +26,8 @@ export class AuthService {
           var emailVerificado = userv.emailVerified;
           console.log(userv.uid);
           if (emailVerificado == true) {
-            resolve(user)
             console.log("Email verificado");
+            resolve(user)
           } else {
             console.log("Email no verificado ");
           }
@@ -42,28 +41,13 @@ export class AuthService {
   }
   //Funcion para el registro de token 
   guardarToken(ui: string, tokenr: string) {
+    console.log(ui);
     this.db.collection('users').doc(ui).update({ token: tokenr });
   }
   //Funcion para update el token en caso de que el usuario haya cambiado de equipo
   updateToken(tokenr: string) {
     this.isAuth().subscribe(user => {
-      this.obtenernombreUsuario(user.uid).subscribe(usa => {
-        const data2: usuarioss = usa.payload.data() as usuarioss;
-        var token = data2.token;
-        var uid = data2.uid;
-        console.log("Este es el token :" + token);
-        if (token == null) {
-          this.guardarToken(uid, tokenr);
-        } else {
-          if (tokenr != token) {
-            console.log("cambio de equipo");
-            this.db.collection('users').doc(user.uid).update({ token: tokenr });
-          }
-        }
-
-      })
-
-
+      this.guardarToken(user.uid, tokenr);
     });
   }
   //Cierre de Sesion
@@ -96,7 +80,8 @@ export class AuthService {
         const uid = res.user.uid;
         this.db.collection('users').doc(res.user.uid).set({
           uid: uid,
-          correo: email
+          correo: email,
+          token:""
         })
         this.AFauth.onAuthStateChanged(function (userv) {
           var emailVerificado = userv.emailVerified;
