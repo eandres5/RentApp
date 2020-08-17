@@ -69,6 +69,7 @@ export class RegistroPage implements OnInit {
   urlImage: Observable<string>;
   imagePath: string;
   iduser: string;
+  public c: string;
   constructor(private camera: Camera,
     private platform: Platform,
     private file: File,
@@ -84,6 +85,7 @@ export class RegistroPage implements OnInit {
     this.auth.isAuth().subscribe(user=>{
       this.iduser=user.uid;
     })
+    this.c="assets/images/camera.png";
   }
   //carga de imagen en Firestorage
   onUpload(e){
@@ -105,6 +107,7 @@ export class RegistroPage implements OnInit {
         if(url){
           console.log(url);
           this.image = url;
+          this.c=this.image;
         }
       })
     })
@@ -185,6 +188,7 @@ async addPhoto(source: string) {
           if(url){
             console.log(url);
             this.image = url;
+            this.c=this.image;
           }
         });
       })
@@ -233,6 +237,7 @@ async addPhoto(source: string) {
           if(url){
             console.log(url);
             this.image = url;
+            this.c=this.image;
           }
         });
       })
