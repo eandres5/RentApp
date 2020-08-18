@@ -7,7 +7,8 @@ import { map } from 'rxjs/operators';
 
 interface usuarioss {
   uid: string,
-  token: string
+  token: string,
+  inhabilitado:boolean
 }
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,6 @@ export class AuthService {
         //Verificacion de cuenta verificada por email.
         this.AFauth.onAuthStateChanged(function (userv) {
           var emailVerificado = userv.emailVerified;
-          console.log(userv.uid);
           if (emailVerificado == true) {
             console.log("Email verificado");
             resolve(user)
