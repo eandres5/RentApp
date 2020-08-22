@@ -8,17 +8,16 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-item>
-    <ion-searchbar type="text" ></ion-searchbar>
+    <ion-searchbar type="text" (ionChange)="buscar($event)"></ion-searchbar>
   </ion-item>
   <!--
-    (ionChange)="buscar($event)"
+    
   -->
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-label>{{ articulo.userId }}</ion-label>
-    <ion-item *ngFor="let articulo of articulosUsuario">
+    <ion-item *ngFor="let articulo of articulos | filtro: textoBuscar">
       <ion-thumbnail slot="start">
         <img [src]=" articulo.img == ''? '/assets/images/camera.png': articulo.img">
       </ion-thumbnail>

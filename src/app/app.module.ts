@@ -54,6 +54,10 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { File } from '@ionic-native/file/ngx';
 import {ChatComponent} from 'src/app/components/chat/chat.component';
 
+//importacion del modulo de pipes
+import { PipesModule } from './pipes/pipes.module';
+
+
 @NgModule({
   declarations: [AppComponent,ChatComponent],
   entryComponents: [AppComponent,ChatComponent],
@@ -63,6 +67,7 @@ import {ChatComponent} from 'src/app/components/chat/chat.component';
     AngularFirestoreModule,
     AngularFireStorageModule,
     FormsModule,
+    PipesModule,
     HttpClientModule],
   providers: [
     FCM,

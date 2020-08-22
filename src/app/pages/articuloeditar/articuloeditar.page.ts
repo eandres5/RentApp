@@ -8,7 +8,7 @@ import { FormBuilder } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { finalize } from 'rxjs/operators';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-articuloeditar',
@@ -44,7 +44,10 @@ export class ArticuloeditarPage implements OnInit {
     public afSG: AngularFireStorage,
     private camera: Camera,
     private platform: Platform,
-    private file: File) { }
+    private file: File,
+    public toastController: ToastController,
+    public alertController: AlertController
+    ) { }
 
   ngOnInit() {
   }
@@ -58,8 +61,36 @@ export class ArticuloeditarPage implements OnInit {
     }
   }
 
+  async eliminarArticulo(id: string){
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Guardar Cambios',
+      message: '¿Esta seguro de guardar los cambios de este artículo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Ok',
+          handler: () => {
+            this.guardarcambios();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    
+  }
+
   //funcion para guardar los cambios
   guardarcambios(){
+    this.confirmacionArticuloEditar();
     console.log("si se guardo ajjaaj");
 
   }
@@ -166,5 +197,15 @@ export class ArticuloeditarPage implements OnInit {
       sourceType: this.camera.PictureSourceType.CAMERA
     };
     return await this.camera.getPicture(options);
+  }
+
+  //alerta de mensajes
+  async confirmacionArticuloEditar(){
+    const toast = await this.toastController.create({
+      color: 'dark',
+      message: 'Cambios guardados con exito!',
+      duration: 3000
+    });
+    toast.present();
   }
 }
