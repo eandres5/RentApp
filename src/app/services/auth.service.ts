@@ -100,7 +100,8 @@ export class AuthService {
 
       }).catch(err => {
         reject(err)
-        console.log(err);
+        alert('El correo ya se encuentra registrado');
+        this.router.navigate(['login']);
       }
       
       );
