@@ -25,7 +25,6 @@ export class DetallearticuloPage implements OnInit {
   };
 
   articulos: TaskI[];
-  articulosUsuario: [];
 
   idu: string;
 
@@ -38,7 +37,8 @@ export class DetallearticuloPage implements OnInit {
     private articuloService: ArticuloService,
     public alertController: AlertController,
     public toastController: ToastController,
-    private auth:AuthService
+    private auth:AuthService,
+    public Authservice: AuthService
     
   ) { }
 
@@ -48,22 +48,34 @@ export class DetallearticuloPage implements OnInit {
       this.idu=user.uid;
       this.articulo.userId=this.idu;
       console.log(this.idu);
-      this.articulosUsu(this.idu);
-
     });
 
+    this.articulosUsu();
+
+  }
+
+  articulosUsu(){
+    this.articuloService.getArticulos().subscribe( arti=>{
+      this.Authservice.isAuth().subscribe(user=>{
+        this.articulos=[];
+        console.log(user.uid);
+        var cont=0;
+        for (let i = 0; i < arti.length; i++) {
+          if(arti[i].userId==user.uid){
+            this.articulos[cont]=arti[i];
+            cont++;
+          }
+        }
+        console.log(this.articulos);
+      })
+      
+    });
   }
 
   editararticulo(id: string){
     this.router.navigate(['home/articuloeditar/' + id]);
   }
 
-  articulosUsu(id: string){
-    this.articuloService.getArticuloUsu(id).subscribe(res=>{
-      console.log(res);
-    });
-
-  }
 
   async eliminarArticulo(id: string){
 
@@ -109,7 +121,6 @@ export class DetallearticuloPage implements OnInit {
   }
 
   //mensaje inferior de eliminacion
-
   async eliminar(id: string){
     this.articuloService.deleteArticulo(id).then(() => {
       this.router.navigateByUrl('/home/detallearticulo');
@@ -121,6 +132,13 @@ export class DetallearticuloPage implements OnInit {
       duration: 2000
     });
     toast.present();
+  }
+
+  // filtro 
+  buscar(event){
+    this.textoBuscar = event.detail.value;
+    console.log(event);
+    console.log(this.textoBuscar);
   }
 
   /*programacion barra arriba popover y btn salir btn dark mode*/

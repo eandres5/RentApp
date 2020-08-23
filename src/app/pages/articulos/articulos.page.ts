@@ -1,7 +1,7 @@
 import { Component, OnInit,HostBinding } from '@angular/core';
 import { PopoverController, Platform } from '@ionic/angular';
 import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
-import{AuthService} from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 import { async } from '@angular/core/testing';
 import { TaskI } from 'src/app/models/task.interface';
@@ -54,6 +54,14 @@ export class ArticulosPage implements OnInit {
   detalles(id: string){
     this.router.navigate(['home/detallever/' + id]);
   }
+
+  // filtro 
+  buscar(event){
+    this.textoBuscar = event.detail.value;
+    console.log(event);
+    console.log(this.textoBuscar);
+  }
+
   //boton more
   async mostrarpop(evento) {
 

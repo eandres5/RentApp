@@ -9,6 +9,7 @@ import { ArticulosPageRoutingModule } from './articulos-routing.module';
 import { ArticulosPage } from './articulos.page';
 import { MorebtnComponent } from 'src/app/components/morebtn/morebtn.component';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   entryComponents:[
@@ -18,6 +19,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     ArticulosPageRoutingModule,
     ComponentsModule
   ],

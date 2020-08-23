@@ -12,194 +12,87 @@
 <ion-content>
 
   <ion-card>
-    <ion-item>
-      <ion-label position="floating">Título</ion-label>
-      <ion-input [(ngModel)]="articulo.titulo"></ion-input>
-    </ion-item>
+    <form [formGroup]="articuloForm" (ngSubmit)="nuevo()">
+      <ion-item>
+        <ion-label position="floating">Título</ion-label>
+        <ion-input formControlName="tituloa" name="tituloa"></ion-input>
+        <div *ngFor="let error of errorMessages.tituloa">
+          <ng-container *ngIf="articuloForm.get('tituloa').hasError(error.type) && (tituloa.dirty || tituloa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
-      <ion-textarea clear rows="3" type="text" [(ngModel)]="articulo.descripcion">
-      </ion-textarea>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
+        <ion-textarea clear rows="3" type="text" formControlName="descripciona" name="descripciona">
+        </ion-textarea>
+        <div *ngFor="let error of errorMessages.descripciona">
+          <ng-container *ngIf="articuloForm.get('descripciona').hasError(error.type) && (descripciona.dirty || descripciona.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Télefono</ion-label>
-      <ion-input type="number" clear type="number" [(ngModel)]="articulo.telefono"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Télefono</ion-label>
+        <ion-input type="number" clear type="number" formControlName="telefonoa" name="telefonoa"></ion-input>
+        <div *ngFor="let error of errorMessages.telefonoa">
+          <ng-container *ngIf="articuloForm.get('telefonoa').hasError(error.type) && (telefonoa.dirty || telefonoa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Costo</ion-label>
-      <ion-input type="number" clear type="number" [(ngModel)]="articulo.costo"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Costo</ion-label>
+        <ion-input type="number" clear type="number" formControlName="costoa" name="costoa"></ion-input>
+        <div *ngFor="let error of errorMessages.costoa">
+          <ng-container *ngIf="articuloForm.get('costoa').hasError(error.type) && (costoa.dirty || costoa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-grid>
-      <ion-row justify-content-center align-items-end style="height:100%">
-        <ion-col col-6>
-          <ion-button color="primary" size="50%" (click)="addPhoto('camera')">
-            <ion-icon name="camera" slot="start"></ion-icon>
-            Tomar Foto
-          </ion-button>
-        </ion-col>
-        <ion-col col-6>
-          <ion-button color="primary" size="50%" expand="block" (click)="addPhoto('library')">
-            <ion-icon name="image" slot="start"></ion-icon>
-            Galeria
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      <ion-item>
+        <ion-card size="width: 100%">
+          <ion-card-content (click)="presentAlertCamera()">
+            <img [src]="foto" class="card-img-top">
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
 
-    <ion-item>
-      <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
-      <ion-input [value]="downloadUrl | async" name="url" [(ngModel)]="articulo.img"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-card size="width: 100%">
-        <ion-card-content>
-          <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top">
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-grid>
-      <ion-row justify-content-center align-items-end style="height:100%">
-        <ion-col col-2>
-        </ion-col>
-        <ion-col col-8>
-          <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="addArticulo()"
-            [btnDisabled]="habilitar">Publicar
-          </ion-button>
-        </ion-col>
-        <ion-col col-2>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      <ion-item>
+        <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+        <ion-input [value]="downloadUrl | async" name="url"></ion-input>
+      </ion-item>
 
-    <ion-grid>
-      <ion-row justify-content-center align-items-end style="height:100%">
-        <ion-col col-2>
-        </ion-col>
-        <ion-col col-8>
-          <ion-button color="danger" (click)="cancelar()" style="width: 100%; position: center;">Cancelar
-          </ion-button>
-        </ion-col>
-        <ion-col col-2>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      <ion-grid>
+        <ion-row justify-content-center align-items-end style="height:100%">
+          <ion-col col-2>
+          </ion-col>
+          <ion-col col-8>
+            <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="nuevo()"
+            [disabled]="!articuloForm.valid">Publicar
+            </ion-button>
+          </ion-col>
+          <ion-col col-2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row justify-content-center align-items-end style="height:100%">
+          <ion-col col-2>
+          </ion-col>
+          <ion-col col-8>
+            <ion-button color="danger" (click)="cancelar()" style="width: 100%; position: center;">Cancelar
+            </ion-button>
+          </ion-col>
+          <ion-col col-2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
   </ion-card>
-
-  <!--
-
-    camara con capacitor
-
-    <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let foto of fotos; index as position">
-        <ion-img src="{{foto.webviewPath}}"></ion-img>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="nuevaFoto()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
-
-    <div *ngFor="let error of errorMessage.img">
-        <ng-container *ngIf="img.hasError(error.type) && (img.dirty || img.touched)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-      </div>
-
-    <form [formGroup]="registrationForm" (ngSubmit)="ingresarUsuario()"> 
-    <ion-item>
-      <ion-label position="floating" style="text-align: center">Ingrese Correo Electrónico</ion-label>
-      <ion-input formControlName="emailv" type="text" name="email" [(ngModel)]="email"></ion-input>
-    </ion-item>
-    <div *ngFor="let error of errorMessages.emailv">
-      <ng-container *ngIf="registrationForm.get('emailv').hasError(error.type) && (emailv.dirty || emailv.touched)">
-        <small class="error-message">{{error.message}}</small>
-      </ng-container>
-    </div>
-  <br>
-  <ion-item>
-    <ion-label position="floating" style="text-align: center">Ingrese Contraseña</ion-label>
-    <ion-input formControlName="passv" type="password" name="contrasena" [(ngModel)]="pass"></ion-input>
-    <div *ngFor="let error of errorMessages.passv">
-      <ng-container *ngIf="passv.hasError(error.type) && (passv.dirty || passv.touched)">
-        <small class="error-message">{{error.message}}</small>
-      </ng-container>
-    </div>
-  </ion-item>
-  <br>
-  <ion-button [disabled]="!registrationForm.valid" expand="block" (click)="ingresarUsuario()" type="submit">Registrarse</ion-button>
-  <br>
-  <ion-button  expand="block"  routerLink="/login">Ingresar</ion-button>
-  </form>
-
-
-
-    <form>
-    <ion-item>
-      <ion-label>Todo</ion-label>
-      <ion-input type="text" formControlName="title"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Description</ion-label>
-      <ion-textarea formControlName="description"></ion-textarea>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!todo.valid">Submit</button>
-  </form>
-
-
-    
-
-
-    <ion-card>
-      <ion-card-content>
-        <ion-button (click)="takePicture()">Tomar un foto</ion-button>
-        <img *ngIf="image" [src]="image" >
-      </ion-card-content>
-    </ion-card>
-
-
-
-  <ion-card>
-    <ion-item>
-      <ion-icon name="pin" slot="start"></ion-icon>
-      <ion-label>ion-item in a card, icon left, button right</ion-label>
-      <ion-button fill="outline" slot="end">View</ion-button>
-    </ion-item>
-  
-    <ion-card-content>
-      This is content, without any paragraph or header tags,
-      within an ion-card-content element.
-    </ion-card-content>
-  </ion-card>
-  
-  <ion-card>
-    <ion-item href="#" class="ion-activated">
-      <ion-icon name="wifi" slot="start"></ion-icon>
-      <ion-label>Card Link Item 1 activated</ion-label>
-    </ion-item>
-  
-    <ion-item href="#">
-      <ion-icon name="wine" slot="start"></ion-icon>
-      <ion-label>Card Link Item 2</ion-label>
-    </ion-item>
-  
-    <ion-item class="ion-activated">
-      <ion-icon name="warning" slot="start"></ion-icon>
-      <ion-label>Card Button Item 1 activated</ion-label>
-    </ion-item>
-  
-    <ion-item>
-      <ion-icon name="walk" slot="start"></ion-icon>
-      <ion-label>Card Button Item 2</ion-label>
-    </ion-item>
-  </ion-card>
--->
 </ion-content>

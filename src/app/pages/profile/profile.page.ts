@@ -25,11 +25,13 @@ interface user{
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  
   imagePath: string;
   public usersR : any =[];
   public image: string;
   uploadPercent: Observable<number>;
   urlImage: Observable<string>;
+
   constructor(private camera: Camera,
     private platform: Platform,
     private file: File,

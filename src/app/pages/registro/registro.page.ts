@@ -6,12 +6,12 @@ import {clsprofile} from '../../backend/clsprofile';
 //Router
 import {Router} from '@angular/router';
 //librerias de autenticacion y Storage de Firebase
-import {AngularFireAuth} from '@angular/fire/auth';
-import {AngularFireStorage} from '@angular/fire/storage';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 //Librerias para observables y Finalize
 import { finalize } from 'rxjs/operators';
-import {Observable} from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs/internal/Observable';
 //Formulario
 import {FormBuilder, Validators, FormGroup, Form, FormControl} from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
@@ -70,6 +70,7 @@ export class RegistroPage implements OnInit {
   imagePath: string;
   iduser: string;
   public c: string;
+  
   constructor(private camera: Camera,
     private platform: Platform,
     private file: File,
