@@ -2,74 +2,87 @@
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home/detallearticulo"></ion-back-button>
-      <ion-title></ion-title>
+      <ion-title>{{ articulo.titulo }}</ion-title>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-label>{{articulo.id}}</ion-label>
   <ion-card>
-    <ion-item>
-      <ion-label position="floating">Título</ion-label>
-      <ion-input clear type="text" required [(ngModel)]="articulo.titulo"></ion-input>
-    </ion-item>
+    <form [formGroup]="articuloForm" (submit)="guardarArticulo()">
+      <ion-item>
+        <ion-label position="floating">Título</ion-label>
+        <ion-input formControlName="tituloa" name="tituloa" value="{{articulo.titulo}}"></ion-input>
+        <div *ngFor="let error of errorMessages.tituloa">
+          <ng-container *ngIf="articuloForm.get('tituloa').hasError(error.type) && (tituloa.dirty || tituloa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
-      <ion-textarea clear rows="3" type="text" [(ngModel)]="articulo.descripcion"></ion-textarea>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
+        <ion-textarea clear rows="3" type="text" formControlName="descripciona" name="descripciona" value="{{articulo.descripcion}}">
+        </ion-textarea>
+        <div *ngFor="let error of errorMessages.descripciona">
+          <ng-container *ngIf="articuloForm.get('descripciona').hasError(error.type) && (descripciona.dirty || descripciona.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Télefono</ion-label>
-      <ion-input clear type="text" required [(ngModel)]="articulo.telefono"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Télefono</ion-label>
+        <ion-input type="number" clear type="number" formControlName="telefonoa" name="telefonoa" value="{{articulo.telefono}}"></ion-input>
+        <div *ngFor="let error of errorMessages.telefonoa">
+          <ng-container *ngIf="articuloForm.get('telefonoa').hasError(error.type) && (telefonoa.dirty || telefonoa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Costo</ion-label>
-      <ion-input clear type="text" required [(ngModel)]="articulo.costo"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Costo</ion-label>
+        <ion-input type="number" clear type="number" formControlName="costoa" name="costoa" value="{{articulo.costo}}"></ion-input>
+        <div *ngFor="let error of errorMessages.costoa">
+          <ng-container *ngIf="articuloForm.get('costoa').hasError(error.type) && (costoa.dirty || costoa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
 
-    <ion-grid>
-      <ion-row justify-content-center align-items-end style="height:100%">
-        <ion-col col-6>
-          <ion-button color="tertiary" size="50%" (click)="addPhoto('camera')">
-            <ion-icon name="camera" slot="start"></ion-icon>
-            Tomar Foto
-          </ion-button>
-        </ion-col>
-        <ion-col col-6>
-          <ion-button color="tertiary" size="50%" expand="block" (click)="addPhoto('library')">
-            <ion-icon name="image" slot="start"></ion-icon>
-            Galeria
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      <ion-item>
+        <ion-card size="width: 100%">
+          <ion-card-content (click)="presentAlertCamera()">
+            <img [src]="foto" class="card-img-top" value="articulo.img">
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
 
-    <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
-    <ion-input #imageUser type="hidden" [value]="urlImage | async" name="url" [(ngModel)]="articulo.img"></ion-input>
-    <ion-card>
-      <ion-card-content>
-        <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top">
-      </ion-card-content>
-    </ion-card>
-    <ion-button expand="block" *ngIf="urlImage | async; else btnDisabled" (click)="editarArticulo()">Guardar Cambios
-    </ion-button>
+      <ion-item>
+        <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+        <ion-input [value]="downloadUrl | async" name="url"></ion-input>
+      </ion-item>
 
-    <ion-grid>
-      <ion-row justify-content-center align-items-end style="height:100%">
-        <ion-col col-2>
-        </ion-col>
-        <ion-col col-8>
-          <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="guardarcambios()"
-            [btnDisabled]="habilitar">Guardar Cambios
-          </ion-button>
-        </ion-col>
-        <ion-col col-2>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+      <ion-button expand="block" *ngIf="urlImage | async; else btnDisabled">Guardar Cambios
+      </ion-button>
 
+      <ion-grid>
+        <ion-row justify-content-center align-items-end style="height:100%">
+          <ion-col col-2>
+          </ion-col>
+          <ion-col col-8>
+            <ion-button expand="block" color="tertiary" style="width: 100%; position: center;"
+              (click)="guardarArticulo(articulo.id)" [btnDisabled]="habilitar">Guardar Cambios
+            </ion-button>
+          </ion-col>
+          <ion-col col-2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
   </ion-card>
-  
+
 </ion-content>

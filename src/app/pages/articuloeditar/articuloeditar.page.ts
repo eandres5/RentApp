@@ -4,7 +4,7 @@ import { ArticuloService } from 'src/app/services/articulo.service';
 import { TaskI } from 'src/app/models/task.interface';
 import { Observable } from 'rxjs/internal/Observable';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { finalize } from 'rxjs/operators';
@@ -26,6 +26,8 @@ export class ArticuloeditarPage implements OnInit {
   uploadPercent: Observable<number>;
   downloadUrl: Observable<string>;
   image: string;
+  public foto: string;
+  public imgtemporal: string;
 
 
   articulo: TaskI = {
@@ -38,6 +40,49 @@ export class ArticuloeditarPage implements OnInit {
     userId: '',
   };
 
+  //variables para el form de articulo
+
+  get tituloa(){
+    return this.articuloForm.get('tituloa');
+  }
+
+  get descripciona(){
+    return this.articuloForm.get('descripciona');
+  }
+
+  get descrtelefonoaipciona(){
+    return this.articuloForm.get('telefonoa');
+  }
+
+  get costoa(){
+    return this.articuloForm.get('telefonoa');
+  }
+
+  public errorMessages = {
+    tituloa: [
+      { type: 'required', message: '*' },
+      { type: 'pattern', message: 'Debe ingresar el titulo del articulo' }
+    ],
+    descripciona:[
+      { type: 'required', message: '*' },
+      { type: 'pattern', message: 'Ingrese una descripción para el articulo' }
+    ],
+    telefonoa:[
+      {type: 'pattern', message: 'Número incorrecto, por favor verifique el número'}
+    ],
+    costoa:[
+      { type: 'pattern', message: 'Debe ingresar el costo del articulo' }
+    ]
+
+  }
+
+  articuloForm = this.formBuilder.group({
+    tituloa: ['', [Validators.required, Validators.minLength(2)]],
+    descripciona: ['', [Validators.required, Validators.minLength(2)]],
+    telefonoa: ['', Validators.pattern("^((\\+593-?)|0)?[0-9]{9}$")],
+    costoa: ['', [Validators.required, Validators.minLength(1)]]
+  });
+
   constructor(private activatedRoute: ActivatedRoute, 
     private articuloService: ArticuloService, 
     private router: Router,
@@ -46,10 +91,12 @@ export class ArticuloeditarPage implements OnInit {
     private platform: Platform,
     private file: File,
     public toastController: ToastController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private formBuilder: FormBuilder
     ) { }
 
   ngOnInit() {
+    this.articulo.img = this.foto;
   }
 
   ngAfterViewInit(): void {
@@ -61,7 +108,8 @@ export class ArticuloeditarPage implements OnInit {
     }
   }
 
-  async eliminarArticulo(id: string){
+  //alertas
+  async guardarArticulo(id : string){
 
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -73,12 +121,12 @@ export class ArticuloeditarPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+           
           }
         }, {
           text: 'Ok',
           handler: () => {
-            this.guardarcambios();
+            this.guardarcambios(id);
           }
         }
       ]
@@ -88,10 +136,64 @@ export class ArticuloeditarPage implements OnInit {
     
   }
 
+  async presentAlertCamera() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      message: '<strong>Seleccione:</strong>!!!',
+      buttons: [
+        {
+          text: 'Camara',
+          handler: () => {
+          
+            this.addPhoto('camera');
+          }
+        },
+        {
+          text: 'Galeria',
+          handler: () => {
+           
+            this.addPhoto('library');
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   //funcion para guardar los cambios
-  guardarcambios(){
+  guardarcambios(id: string){
+
+    this.imgtemporal = this.articulo.img;
+
+    if (this.imgtemporal === this.foto){
+      
+      console.log("poner la imagen temporal");
+      console.log(this.foto);
+
+    }else{
+
+      console.log("poner la nueva foto");
+      console.log(this.imgtemporal);
+    }
+
+    ///this.articulo.titulo = this.articuloForm.value['tituloa'];
+    //this.articulo.descripcion = this.articuloForm.value['descripciona'];
+    //this.articulo.telefono = this.articuloForm.value['telefonoa'];
+    //this.articulo.costo = this.articuloForm.value['costoa'];
+
+    console.log(this.articulo);
     this.confirmacionArticuloEditar();
     console.log("si se guardo ajjaaj");
+    //this.router.navigate(['/home/detallearticulo']);
 
   }
   //metodo para tomar foto o subir desde galeria
@@ -99,11 +201,8 @@ export class ArticuloeditarPage implements OnInit {
 
     switch (source) {
       case 'camera': {
-        console.log('camera');
         const cameraPhoto = await this.openCamera();
         this.image = cameraPhoto;
-        console.log(this.image);
-
         const fileURI = this.image;
         let file: string;
 
@@ -111,11 +210,8 @@ export class ArticuloeditarPage implements OnInit {
           file = fileURI.split('/').pop();
         } else {
           file = fileURI.substring(fileURI.lastIndexOf('/') + 1);
-          console.log(file);
         }
         const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
-
-        console.log(path);
 
         const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
         const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
@@ -130,13 +226,23 @@ export class ArticuloeditarPage implements OnInit {
         task.snapshotChanges().pipe(
           finalize(() => this.downloadUrl = ref.getDownloadURL())
         ).subscribe();
+
+        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+          const downloadURL = ref.getDownloadURL();
+          downloadURL.subscribe(url=>{
+            if(url){
+              this.image = url;
+              this.foto=this.image;
+            }
+          });
+        });
+
         break;
       }
       case 'library': {
-        console.log('library');
+        
         const libraryImage = await this.openLibrary();
         this.image = libraryImage;
-        console.log(this.image);
 
         const fileURI = this.image;
         let file: string;
@@ -145,13 +251,9 @@ export class ArticuloeditarPage implements OnInit {
           file = fileURI.split('/').pop();
         } else {
           file = fileURI.substring(fileURI.lastIndexOf('/') + 1, fileURI.indexOf('?'));
-          console.log("aqui");
-          console.log(file);
         }
 
         const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
-
-        console.log(path);
 
         const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
         const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
@@ -166,6 +268,19 @@ export class ArticuloeditarPage implements OnInit {
         task.snapshotChanges().pipe(
           finalize(() => this.downloadUrl = ref.getDownloadURL())
         ).subscribe();
+
+        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+       
+          const downloadURL = ref.getDownloadURL();
+          downloadURL.subscribe(url=>{
+            if(url){
+              
+              this.image = url;
+              this.foto=this.image;
+            }
+          });
+        });
+
         break;
       }
     }

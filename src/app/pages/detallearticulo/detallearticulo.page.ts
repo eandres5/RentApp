@@ -47,7 +47,6 @@ export class DetallearticuloPage implements OnInit {
     this.auth.isAuth().subscribe(user=>{
       this.idu=user.uid;
       this.articulo.userId=this.idu;
-      console.log(this.idu);
     });
 
     this.articulosUsu();
@@ -58,7 +57,6 @@ export class DetallearticuloPage implements OnInit {
     this.articuloService.getArticulos().subscribe( arti=>{
       this.Authservice.isAuth().subscribe(user=>{
         this.articulos=[];
-        console.log(user.uid);
         var cont=0;
         for (let i = 0; i < arti.length; i++) {
           if(arti[i].userId==user.uid){
@@ -66,7 +64,6 @@ export class DetallearticuloPage implements OnInit {
             cont++;
           }
         }
-        console.log(this.articulos);
       })
       
     });
@@ -89,7 +86,6 @@ export class DetallearticuloPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Ok',
@@ -101,22 +97,6 @@ export class DetallearticuloPage implements OnInit {
     });
 
     await alert.present();
-
-    /*
-     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(id);
-    if (id) {
-      this.articuloService.getArticulo(id).subscribe(articuloData =>{
-        this.articulo = articuloData;
-      });
-    }
-    */ 
-    /*
-    this.articuloService.deleteArticulo(this.articulo.id).then(() => {
-      this.router.navigateByUrl('/');
-    }, err => {
-    });
-     */
     
   }
 
@@ -137,8 +117,6 @@ export class DetallearticuloPage implements OnInit {
   // filtro 
   buscar(event){
     this.textoBuscar = event.detail.value;
-    console.log(event);
-    console.log(this.textoBuscar);
   }
 
   /*programacion barra arriba popover y btn salir btn dark mode*/

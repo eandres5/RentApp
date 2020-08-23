@@ -180,10 +180,10 @@ export class ProfilePage implements OnInit {
 
     switch (source) {
       case 'camera': {
-        console.log('camera');
+      
         const cameraPhoto = await this.openCamera();
         this.image = cameraPhoto;
-        console.log(this.image);
+      
 
         const fileURI = this.image;
         let file: string;
@@ -192,16 +192,16 @@ export class ProfilePage implements OnInit {
           file = fileURI.split('/').pop();
         } else {
           file = fileURI.substring(fileURI.lastIndexOf('/') + 1);
-          console.log(file);
+      
         }
         const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
 
-        console.log(path);
+     
 
         const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
         const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
         const id = this.usersR[0].uid;
-        console.log(id);
+       
         this.imagePath = `Perfiles/profile_${id}` + '.jpg';
 
         const ref = this.storage.ref(this.imagePath);
@@ -212,11 +212,11 @@ export class ProfilePage implements OnInit {
           finalize(() => this.urlImage = ref.getDownloadURL())
         ).subscribe();
         task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
-          console.log("Imagen subida");
+       
           const downloadURL = ref.getDownloadURL();
           downloadURL.subscribe(url=>{
             if(url){
-              console.log(url);
+              
               this.image = url;
               this.updateImage();
             }
@@ -226,10 +226,10 @@ export class ProfilePage implements OnInit {
         break;
       }
       case 'library': {
-        console.log('library');
+     
         const libraryImage = await this.openLibrary();
         this.image = libraryImage;
-        console.log(this.image);
+       
 
         const fileURI = this.image;
         let file: string;
@@ -238,19 +238,18 @@ export class ProfilePage implements OnInit {
           file = fileURI.split('/').pop();
         } else {
           file = fileURI.substring(fileURI.lastIndexOf('/') + 1, fileURI.indexOf('?'));
-          console.log("aqui");
-          console.log(file);
+         
         }
 
         const path: string = fileURI.substring(0, fileURI.lastIndexOf('/'));
 
-        console.log(path);
+  
 
         const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
         const blob: Blob = new Blob([buffer], { type: 'image/jpeg' });
 
         const id = this.usersR[0].uid;
-        console.log(id);
+      
         this.imagePath = `Perfiles/profile_${id}` + '.jpg';
 
         const ref = this.storage.ref(this.imagePath);
@@ -261,11 +260,11 @@ export class ProfilePage implements OnInit {
           finalize(() => this.urlImage = ref.getDownloadURL())
         ).subscribe();
         task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
-          console.log("Imagen subida");
+        
           const downloadURL = ref.getDownloadURL();
           downloadURL.subscribe(url=>{
             if(url){
-              console.log(url);
+           
               this.image = url;
               this.updateImage();
             }
@@ -312,14 +311,14 @@ export class ProfilePage implements OnInit {
          {
           text: 'Camara',
           handler: () => {
-            console.log('Camara');
+            
             this.addPhoto('camera');
           }
         },
         {
           text: 'Galeria',
           handler: () => {
-            console.log('Galeria');
+       
             this.addPhoto('library');
           }
         },
@@ -328,7 +327,7 @@ export class ProfilePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            
           }
         }
       ]

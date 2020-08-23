@@ -129,6 +129,7 @@ export class NuevoarticuloPage implements OnInit {
     this.habilitar = false;
   }
 
+  //se crea un nuevo articulo en la base de datos con todos los campos de la interfaz
   nuevo() {
 
     this.articulo.titulo = this.articuloForm.value['tituloa'];
@@ -137,8 +138,7 @@ export class NuevoarticuloPage implements OnInit {
     this.articulo.costo = this.articuloForm.value['costoa'];
     this.articulo.img = this.image;
     
-    console.log(this.articulo);
-    
+    console.log(this.articulo); 
     
     this.articuloService.addArticulo(this.articulo).then(() => {
       this.router.navigate(['/home/nuevoarticulo']);
@@ -147,17 +147,6 @@ export class NuevoarticuloPage implements OnInit {
     }, err => {
     });
     
-  }
-
-  //se crea un nuevo articulo en la base de datos con todos los campos de la interfaz
-  addArticulo() {
-
-    /*
-    this.articuloService.addArticulo(this.articulo).then(() => {
-      this.router.navigate(['/home/nuevoarticulo']);
-    }, err => {
-    });
-    */
   }
 
   async addPhoto(source: string) {
@@ -201,7 +190,7 @@ export class NuevoarticuloPage implements OnInit {
           const downloadURL = ref.getDownloadURL();
           downloadURL.subscribe(url=>{
             if(url){
-              console.log(url);
+         
               this.image = url;
               this.foto=this.image;
             }
@@ -250,7 +239,7 @@ export class NuevoarticuloPage implements OnInit {
           const downloadURL = ref.getDownloadURL();
           downloadURL.subscribe(url=>{
             if(url){
-              console.log(url);
+              
               this.image = url;
               this.foto=this.image;
             }
