@@ -23,7 +23,7 @@
     <!--El pipe se le importa en pagina.module.ts para que funcione
       *ngFor="let articulo of articulos | filtro: textoBuscar"
     -->
-    <ion-item *ngFor="let articulo of articulos | filtro: textoBuscar" (click)="detalles(articulo.id)">
+    <ion-item *ngFor="let articulo of articulos | filtro: textoBuscar: 'titulo'" (click)="detalles(articulo.id)">
       <ion-thumbnail slot="start">
         <img [src]=" articulo.img == ''? '/assets/images/camera.png': articulo.img">
       </ion-thumbnail>

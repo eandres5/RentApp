@@ -17,7 +17,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let articulo of articulos | filtro: textoBuscar">
+    <ion-item *ngFor="let articulo of articulos | filtro: textoBuscar: 'titulo'">
       <ion-thumbnail slot="start">
         <img [src]=" articulo.img == ''? '/assets/images/camera.png': articulo.img">
       </ion-thumbnail>

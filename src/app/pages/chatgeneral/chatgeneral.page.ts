@@ -25,6 +25,7 @@ import {ModalController} from '@ionic/angular';
 export class ChatgeneralPage implements OnInit {
   public chatsR : any =[];
   public to: string;
+  textoBuscar: String = '';
   constructor(private popoverctrl: PopoverController,public Authservice: AuthService, public chatservice: ReadchatsService,private modal:ModalController ) { }
 
 
@@ -67,6 +68,11 @@ export class ChatgeneralPage implements OnInit {
         chat : chat
       }
     }).then((modal)=> modal.present());
+  }
+  buscar(event){
+    this.textoBuscar = event.detail.value;
+    console.log(event);
+    console.log(this.textoBuscar);
   }
 
 }

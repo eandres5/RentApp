@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { ChatgeneralPageRoutingModule } from './chatgeneral-routing.module';
 
 import { ChatgeneralPage } from './chatgeneral.page';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     ChatgeneralPageRoutingModule
   ],
   declarations: [ChatgeneralPage]
