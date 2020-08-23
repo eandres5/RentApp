@@ -88,12 +88,13 @@ export class ReadchatsService {
     return this.db.collection('chats').doc(idchat).valueChanges();
   }
 //envio de mensaje y notificacion a usuarios
-  sendsmsFire(mensaje : clsmensaje, idchat : string){
+  sendsmsFire(mensaje : clsmensaje, idchat : string, img: string){
     this.db.collection('chats').doc(idchat).update({
       mensajes: firestore.FieldValue.arrayUnion(mensaje),
     })
     var sms= mensaje.textosms;
     var nombre = mensaje.nombre;
+    console.log(img);
     this.sendNotifi(sms, nombre);
     
   }

@@ -57,7 +57,7 @@ export class ChatComponent implements OnInit {
       type: 'text',
       date: new Date()
     }
-    this.chatService.sendsmsFire(mensaje, this.chats.id);
+    this.chatService.sendsmsFire(mensaje, this.chats.id, this.chats.img);
     this.mens = "";
   }
 
