@@ -107,12 +107,12 @@ export class ReadchatsService {
           let notification = {
             "notification": {
               "title": enviado,
-              "body":'De: '+nombre+"\n"+sms,
+              "body":"[De: "+nombre+ "]: \n "+ sms,
               "click_action": "FCM_PLUGIN_ACTIVITY",
               "sound": "default",
               "icon": "notification_icon"
             }, "data": {
-              //OPTIONAL PARAMS
+              
             },
             "to": this.token
           }
