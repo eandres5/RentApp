@@ -88,27 +88,29 @@ export class ReadchatsService {
     return this.db.collection('chats').doc(idchat).valueChanges();
   }
 //envio de mensaje y notificacion a usuarios
-  sendsmsFire(mensaje : clsmensaje, idchat : string){
+  sendsmsFire(mensaje : clsmensaje, idchat : string, enviado: string){
     this.db.collection('chats').doc(idchat).update({
       mensajes: firestore.FieldValue.arrayUnion(mensaje),
     })
     var sms= mensaje.textosms;
     var nombre = mensaje.nombre;
-    this.sendNotifi(sms, nombre);
+    console.log(enviado);
+    this.sendNotifi(sms, nombre, enviado);
     
   }
   //envio de notificaciones con la utilizacion de api FCM y metodo post.
-  sendNotifi(sms: string, nombre: string){
+  sendNotifi(sms: string, nombre: string, enviado: string){
     console.log("entro a la funcion"+ sms + nombre+ this.token);
           let options = {headers: new HttpHeaders({'Authorization': 'key=AAAAkptO3BA:APA91bFn2799tCDyL7TXPwMUaPeFo5p2_WyL49jyUbmj3WZb-DwIhhvnNClL6DLgeo769XsosUs9lXqDj2pWjqtP3pATpCWqVifywm7Tu6hazA0A-0f0RflQ9juUcERpHrz-Gqnv_oxM',
            'Content-Type': 'application/json' })}
            //estructura de notificacion.
           let notification = {
             "notification": {
-              "title": sms,
-              "body": 'De:'+nombre,
+              "title": enviado,
+              "body":'De: '+nombre+"\n"+sms,
               "click_action": "FCM_PLUGIN_ACTIVITY",
-              "sound": "default"
+              "sound": "default",
+              "icon": "notification_icon"
             }, "data": {
               //OPTIONAL PARAMS
             },

@@ -57,12 +57,14 @@ export class AuthService {
     })
   }
   //registrar Chat
-  registrarChat(nombre: string, detalle: string, img: string, idp:string) {
+  registrarChat(nombre: string, detalle: string, img: string, idp:string, nomu:string) {
+    console.log(nomu);
     this.isAuth().subscribe(user => {
       var userid = user.uid;
       this.db.collection('chats').add({
         nombre: nombre,
-        descripcion: detalle,
+        creado:nomu,
+        descripcion:detalle,
         img: img,
         users: {
           userr: userid,
