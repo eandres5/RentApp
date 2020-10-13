@@ -110,7 +110,7 @@ export class ReadchatsService {
               "body":"[De: "+nombre+ "]: \n "+ sms,
               "click_action": "FCM_PLUGIN_ACTIVITY",
               "sound": "default",
-              "icon": "notification_icon"
+              "icon": "ic_launcher"
             }, "data": {
               
             },
