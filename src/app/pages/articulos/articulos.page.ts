@@ -44,7 +44,6 @@ export class ArticulosPage implements OnInit {
       console.log(token);
       this.saveToken(token);
     });*/
-
   }
   saveToken(token){
     this.Authservicies.updateToken(token);
