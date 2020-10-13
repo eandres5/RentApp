@@ -71,6 +71,7 @@ export class LoginPage implements OnInit {
   }
   //Restablecer contraseña de usuario.
   resetPassword() {
+    this.email= this.LoginForm.value['emailv'];
     if (!this.email) {
       alert('Ingrese su email!');
     }
