@@ -22,6 +22,8 @@ export class DetallearticuloPage implements OnInit {
     telefono: '',
     costo: '',
     userId: '',
+    disponible: true,
+    fecha: ''
   };
 
   articulos: TaskI[];

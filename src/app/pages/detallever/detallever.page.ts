@@ -23,6 +23,8 @@ export class DetalleverPage implements OnInit {
     telefono: '',
     costo: '',
     userId: '',
+    disponible: true,
+    fecha: ''
   };
 
   constructor(private activatedRoute: ActivatedRoute,

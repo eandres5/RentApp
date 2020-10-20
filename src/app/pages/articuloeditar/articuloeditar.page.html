@@ -10,52 +10,60 @@
 <ion-content>
 
   <ion-card>
-    <form [formGroup]="articuloForm" (submit)="guardarArticulo()">
       <ion-item>
-        <ion-label position="floating">Título</ion-label>
-        <ion-input formControlName="tituloa" name="tituloa" value="{{articulo.titulo}}"></ion-input>
-        <div *ngFor="let error of errorMessages.tituloa">
-          <ng-container *ngIf="articuloForm.get('tituloa').hasError(error.type) && (tituloa.dirty || tituloa.touched)">
-            <small class="error-message">{{error.message}}</small>
-          </ng-container>
-        </div>
+        <ion-label>Titulo</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarTitulo()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.titulo}}
+      </ion-card-content>
+
+
+      <ion-item>
+        <ion-label>Descripción del artículo</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarDescripcion()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.descripcion}}
+      </ion-card-content>
+
+      <ion-item>
+        <ion-label>Télefono</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarTelefono()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.telefono}}
+      </ion-card-content>
+
+      <ion-item>
+        <ion-label>Costo</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarCosto()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.costo}}
+      </ion-card-content>
+
+      <ion-item>
+        <ion-label>Disponible</ion-label>
+        <ion-checkbox color="primary" [(ngModel)]="disponible" name></ion-checkbox>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
-        <ion-textarea clear rows="3" type="text" formControlName="descripciona" name="descripciona" value="{{articulo.descripcion}}">
-        </ion-textarea>
-        <div *ngFor="let error of errorMessages.descripciona">
-          <ng-container *ngIf="articuloForm.get('descripciona').hasError(error.type) && (descripciona.dirty || descripciona.touched)">
-            <small class="error-message">{{error.message}}</small>
-          </ng-container>
-        </div>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Télefono</ion-label>
-        <ion-input type="number" clear type="number" formControlName="telefonoa" name="telefonoa" value="{{articulo.telefono}}"></ion-input>
-        <div *ngFor="let error of errorMessages.telefonoa">
-          <ng-container *ngIf="articuloForm.get('telefonoa').hasError(error.type) && (telefonoa.dirty || telefonoa.touched)">
-            <small class="error-message">{{error.message}}</small>
-          </ng-container>
-        </div>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Costo</ion-label>
-        <ion-input type="number" clear type="number" formControlName="costoa" name="costoa" value="{{articulo.costo}}"></ion-input>
-        <div *ngFor="let error of errorMessages.costoa">
-          <ng-container *ngIf="articuloForm.get('costoa').hasError(error.type) && (costoa.dirty || costoa.touched)">
-            <small class="error-message">{{error.message}}</small>
-          </ng-container>
-        </div>
+        <ion-button>Calificar usuarios</ion-button>
       </ion-item>
 
       <ion-item>
         <ion-card size="width: 100%">
           <ion-card-content (click)="presentAlertCamera()">
-            <img [src]="foto" class="card-img-top" value="articulo.img">
+            <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top" value="articulo.img">
           </ion-card-content>
         </ion-card>
       </ion-item>
@@ -68,20 +76,6 @@
       <ion-button expand="block" *ngIf="urlImage | async; else btnDisabled">Guardar Cambios
       </ion-button>
 
-      <ion-grid>
-        <ion-row justify-content-center align-items-end style="height:100%">
-          <ion-col col-2>
-          </ion-col>
-          <ion-col col-8>
-            <ion-button expand="block" color="tertiary" style="width: 100%; position: center;"
-              (click)="guardarArticulo(articulo.id)" [btnDisabled]="habilitar">Guardar Cambios
-            </ion-button>
-          </ion-col>
-          <ion-col col-2>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </form>
   </ion-card>
 
 </ion-content>

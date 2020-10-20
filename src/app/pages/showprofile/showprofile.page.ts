@@ -26,6 +26,8 @@ export class ShowprofilePage implements OnInit {
     telefono: '',
     costo: '',
     userId: '',
+    disponible: true,
+    fecha: ''
   };
   constructor(
     private articuloService: ArticuloService,private activatedRoute: ActivatedRoute,private router: Router, private auth: AuthService) { }

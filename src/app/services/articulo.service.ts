@@ -56,56 +56,53 @@ export class ArticuloService {
     return this.articuloCollection.add(articulo);
   }
 
-  updateArticulo(articulo: TaskI, id: string): Promise<void>{
-    //si no funciona asi prueba con articulo.title, articulo.descripcion etc etc
-    return this.articuloCollection.doc(id).update(articulo);
-  }
-
   deleteArticulo(id: string): Promise<void>{
     return this.articuloCollection.doc(id).delete();
   }
 
+  updateArticulo(titulore: any, id: string): Promise<void>{
+    //si no funciona asi prueba con articulo.title, articulo.descripcion etc etc
+    return this.articuloCollection.doc(id).update({titulo: titulore}).then(()=>{
+      console.log("Actualizado");
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 
+  updateTitulo(id: string, titulor: string): Promise<void>{
+    console.log(id);
+    return this.articuloCollection.doc(id).update({titulo: titulor});
+  }
 
-  /*
-  private articulosCollection: AngularFirestoreCollection<TaskI>;
-  private articulos: Observable<TaskI[]>;
-  
-  constructor(db: AngularFirestore) {
-    this.articulosCollection = db.collection<TaskI>('articulos');
-    this.articulos = this.articulosCollection.snapshotChanges().pipe(map(
-      actions =>{
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return {id, ...data}
-        });
-      }
-    ));
-   }
-   */
-  
+  updateDescripcion(descripcionR: any, id: string): Promise<void>{
+    return this.articuloCollection.doc(id).update({descripcion: descripcionR}).then(()=>{
+      console.log("Actualizado");
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 
-   /*
-   getArticulos(){
-     return this.articulos;
-   }
+  updateTelefono(telefonoR: any, id: string): Promise<void>{
+    return this.articuloCollection.doc(id).update({telefono: telefonoR}).then(()=>{
+      console.log("Actualizado");
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 
-   getArticulo(id: string){
-     return this.articulosCollection.doc<TaskI>(id).valueChanges();
-   }
+  updateCosto(costoR: any, id: string): Promise<void>{
+    return this.articuloCollection.doc(id).update({costo: costoR}).then(()=>{
+      console.log("Actualizado");
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 
-   //create function CRUD
-   updateArticulo(articulo: TaskI, id: string){
-     return this.articulosCollection.doc(id).update(articulo);
-   }
-
-   addArticulo(articulo: TaskI){
-     return this.articulosCollection.add(articulo);
-   }
-
-   removeArticulo(articulo: TaskI, id: string){
-     return this.articulosCollection.doc(id).delete();
-   }
-   */
+  updateImg(imgR: any, id: string){
+    return this.articuloCollection.doc(id).update({img: imgR}).then(()=>{
+      console.log("actualizado");
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 }

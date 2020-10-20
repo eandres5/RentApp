@@ -57,6 +57,9 @@ import {ChatComponent} from 'src/app/components/chat/chat.component';
 //importacion del modulo de pipes
 import { PipesModule } from './pipes/pipes.module';
 
+//reactive forms module
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [AppComponent,ChatComponent],
@@ -68,7 +71,8 @@ import { PipesModule } from './pipes/pipes.module';
     AngularFireStorageModule,
     FormsModule,
     PipesModule,
-    HttpClientModule],
+    HttpClientModule,
+    ReactiveFormsModule],
   providers: [
     FCM,
     StatusBar,

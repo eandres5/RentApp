@@ -28,6 +28,8 @@ export class ArticulosPage implements OnInit {
     telefono: '',
     costo: '',
     userId: '',
+    disponible: true,
+    fecha: '',
   }
 
   constructor(private popoverctrl: PopoverController,

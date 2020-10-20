@@ -42,6 +42,7 @@ export class NuevoarticuloPage implements OnInit {
   public telefono: number;
   public costo: number;
   public userId: string;
+  public fechaAr: any;
 
   articulo: TaskI = {
     titulo: '',
@@ -50,6 +51,8 @@ export class NuevoarticuloPage implements OnInit {
     telefono: '',
     costo: '',
     userId: '',
+    disponible: true,
+    fecha: '',
   };
   articuloId = null;
 
@@ -106,7 +109,7 @@ export class NuevoarticuloPage implements OnInit {
     private auth: AuthService,
     public alertController: AlertController,
     private formBuilder: FormBuilder,
-    public toastController: ToastController
+    public toastController: ToastController,
 
   ) {
 
@@ -117,6 +120,9 @@ export class NuevoarticuloPage implements OnInit {
       this.idu = user.uid;
       this.articulo.userId = this.idu;
     });
+
+    this.fechaAr = new Date();
+
     this.articulo = {
       titulo: '',
       descripcion: '',
@@ -124,6 +130,8 @@ export class NuevoarticuloPage implements OnInit {
       telefono: '',
       costo: '',
       userId: '',
+      disponible: true,
+      fecha: this.fechaAr
     };
     this.foto = "assets/images/camera.png";
     this.habilitar = false;
@@ -134,7 +142,7 @@ export class NuevoarticuloPage implements OnInit {
 
     this.articulo.titulo = this.articuloForm.value['tituloa'];
     this.articulo.descripcion = this.articuloForm.value['descripciona'];
-    this.articulo.telefono = this.articuloForm.value['telefonoa'];
+    this.articulo.telefono = '0' + this.articuloForm.value['telefonoa'];
     this.articulo.costo = this.articuloForm.value['costoa'];
     this.articulo.img = this.image;
     
@@ -146,6 +154,7 @@ export class NuevoarticuloPage implements OnInit {
       this.cancelar();
     }, err => {
     });
+    
     
   }
 

@@ -21,13 +21,15 @@ export class ArticuloeditarPage implements OnInit {
   upload: any;
   captureDataUrl: string;
   habilitar: Boolean;
+  disponible: boolean;
 
   //variables utilizadas en la imgen
   uploadPercent: Observable<number>;
   downloadUrl: Observable<string>;
-  image: string;
+  public image: string;
   public foto: string;
   public imgtemporal: string;
+  public articuloR: any = [];
 
 
   articulo: TaskI = {
@@ -38,50 +40,9 @@ export class ArticuloeditarPage implements OnInit {
     telefono: '',
     costo: '',
     userId: '',
+    disponible: true,
+    fecha: ''
   };
-
-  //variables para el form de articulo
-
-  get tituloa(){
-    return this.articuloForm.get('tituloa');
-  }
-
-  get descripciona(){
-    return this.articuloForm.get('descripciona');
-  }
-
-  get descrtelefonoaipciona(){
-    return this.articuloForm.get('telefonoa');
-  }
-
-  get costoa(){
-    return this.articuloForm.get('telefonoa');
-  }
-
-  public errorMessages = {
-    tituloa: [
-      { type: 'required', message: '*' },
-      { type: 'pattern', message: 'Debe ingresar el titulo del articulo' }
-    ],
-    descripciona:[
-      { type: 'required', message: '*' },
-      { type: 'pattern', message: 'Ingrese una descripción para el articulo' }
-    ],
-    telefonoa:[
-      {type: 'pattern', message: 'Número incorrecto, por favor verifique el número'}
-    ],
-    costoa:[
-      { type: 'pattern', message: 'Debe ingresar el costo del articulo' }
-    ]
-
-  }
-
-  articuloForm = this.formBuilder.group({
-    tituloa: ['', [Validators.required, Validators.minLength(2)]],
-    descripciona: ['', [Validators.required, Validators.minLength(2)]],
-    telefonoa: ['', Validators.pattern("^((\\+593-?)|0)?[0-9]{9}$")],
-    costoa: ['', [Validators.required, Validators.minLength(1)]]
-  });
 
   constructor(private activatedRoute: ActivatedRoute, 
     private articuloService: ArticuloService, 
@@ -91,30 +52,48 @@ export class ArticuloeditarPage implements OnInit {
     private platform: Platform,
     private file: File,
     public toastController: ToastController,
-    public alertController: AlertController,
-    private formBuilder: FormBuilder
+    public alertController: AlertController
     ) { }
 
   ngOnInit() {
-    this.articulo.img = this.foto;
+
+    this.obtenerArticulo();
+    
   }
 
-  ngAfterViewInit(): void {
+  obtenerArticulo(){
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.articuloService.getArticulo(id).subscribe(articuloData =>{
         this.articulo = articuloData;
+        console.log(this.articulo);
+        this.disponible = this.articulo.disponible;
       });
     }
+
   }
 
-  //alertas
-  async guardarArticulo(id : string){
+  checkDisponible(check){
+    console.log(check);
 
-    const alert = await this.alertController.create({
+  }
+
+  //alertas para cada campo del artiuclo
+  async editarTitulo(){
+
+    const alerta = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Guardar Cambios',
-      message: '¿Esta seguro de guardar los cambios de este artículo?',
+      header: 'Articulo',
+      message: '¿Esta seguro de realizar el cambio a este artículo?',
+      inputs: [
+        {
+          name: 'titulo',
+          type: 'text', 
+          id: 'titulo',
+          value: this.articulo.titulo,
+          placeholder: 'Titulo'
+        }
+      ],
       buttons: [
         {
           text: 'Cancelar',
@@ -125,15 +104,154 @@ export class ArticuloeditarPage implements OnInit {
           }
         }, {
           text: 'Ok',
-          handler: () => {
-            this.guardarcambios(id);
+          handler: (data) => {
+            //Validacion datos de usuario no esten vacios
+            if(data.titulo!=""){
+              console.log(data.titulo);
+              this.articuloService.updateArticulo(data.titulo, this.articulo.id);
+              this.obtenerArticulo();
+            }else{
+              alert('Ingrese el titulo');
+              return false;
+            }
+            
           }
         }
       ]
     });
 
-    await alert.present();
-    
+    await alerta.present();
+
+  }
+
+  async editarDescripcion(){
+
+    const alerta = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Articulo',
+      message: '¿Esta seguro de realizar el cambio a este artículo?',
+      inputs: [
+        {
+          name: 'descripcion',
+          type: 'text', 
+          id: 'descripcion',
+          value: this.articulo.descripcion,
+          placeholder: 'Descripcion'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+           
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            //Validacion datos de usuario no esten vacios
+            if(data.descripcion!=""){
+              console.log(data.descripcion);
+              this.articuloService.updateDescripcion(data.descripcion, this.articulo.id);
+              this.obtenerArticulo();
+            }else{
+              alert('Ingrese una descripción');
+              return false;
+            }
+            
+          }
+        }
+      ]
+    });
+
+    await alerta.present();
+  }
+
+  async editarTelefono(){
+    const alerta = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Articulo',
+      message: '¿Esta seguro de realizar el cambio a este artículo?',
+      inputs: [
+        {
+          name: 'telefono',
+          type: 'text', 
+          id: 'telefono',
+          value: this.articulo.telefono,
+          placeholder: 'Telefono'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+           
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            //Validacion datos de usuario no esten vacios
+            if(data.telefono!=""){
+              console.log(data.telefono);
+              this.articuloService.updateTelefono(data.telefono, this.articulo.id);
+              this.obtenerArticulo();
+            }else{
+              alert('Ingrese número de telefono');
+              return false;
+            }
+            
+          }
+        }
+      ]
+    });
+
+    await alerta.present();
+  }
+
+  async editarCosto(){
+    const alerta = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Articulo',
+      message: '¿Esta seguro de realizar el cambio a este artículo?',
+      inputs: [
+        {
+          name: 'costo',
+          type: 'number', 
+          id: 'costo',
+          value: this.articulo.costo,
+          placeholder: 'Costo'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+           
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            //Validacion datos de usuario no esten vacios
+            if(data.costo!=""){
+              console.log(data.costo);
+              this.articuloService.updateCosto(data.costo, this.articulo.id);
+              this.obtenerArticulo();
+            }else{
+              alert('Ingrese número de costo');
+              return false;
+            }
+            
+          }
+        }
+      ]
+    });
+
+    await alerta.present();
   }
 
   async presentAlertCamera() {
@@ -169,33 +287,6 @@ export class ArticuloeditarPage implements OnInit {
     await alert.present();
   }
 
-  //funcion para guardar los cambios
-  guardarcambios(id: string){
-
-    this.imgtemporal = this.articulo.img;
-
-    if (this.imgtemporal === this.foto){
-      
-      console.log("poner la imagen temporal");
-      console.log(this.foto);
-
-    }else{
-
-      console.log("poner la nueva foto");
-      console.log(this.imgtemporal);
-    }
-
-    ///this.articulo.titulo = this.articuloForm.value['tituloa'];
-    //this.articulo.descripcion = this.articuloForm.value['descripciona'];
-    //this.articulo.telefono = this.articuloForm.value['telefonoa'];
-    //this.articulo.costo = this.articuloForm.value['costoa'];
-
-    console.log(this.articulo);
-    this.confirmacionArticuloEditar();
-    console.log("si se guardo ajjaaj");
-    //this.router.navigate(['/home/detallearticulo']);
-
-  }
   //metodo para tomar foto o subir desde galeria
   async addPhoto(source: string) {
 
@@ -233,6 +324,8 @@ export class ArticuloeditarPage implements OnInit {
             if(url){
               this.image = url;
               this.foto=this.image;
+              this.articuloService.updateCosto(this.image, this.articulo.id);
+              this.obtenerArticulo();
             }
           });
         });
@@ -277,6 +370,8 @@ export class ArticuloeditarPage implements OnInit {
               
               this.image = url;
               this.foto=this.image;
+              this.articuloService.updateCosto(this.image, this.articulo.id);
+              this.obtenerArticulo();
             }
           });
         });
