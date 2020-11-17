@@ -36,6 +36,7 @@ export class ChatgeneralPage implements OnInit {
   obtenerChat(){
     this.chatservice.getChats().subscribe( chats=>{
       this.Authservice.isAuth().subscribe(user=>{
+        if(user){ 
         this.chatsR=[];
         var cont=0;
         for (let i = 0; i < chats.length; i++) {
@@ -43,6 +44,7 @@ export class ChatgeneralPage implements OnInit {
             this.chatsR[cont]=chats[i];
             cont++;
           }
+        }
         }
       })
     });

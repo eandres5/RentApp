@@ -30,6 +30,8 @@ export class AuthGuard implements CanActivate {
           if(veri==true){
             return true;
           }else{
+            this.AFauth.signOut();
+            alert("Verifica tu correo electronico");
             this.router.navigate(['']);
             return false;
           }

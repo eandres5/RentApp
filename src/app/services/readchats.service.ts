@@ -42,7 +42,9 @@ export class ReadchatsService {
   //obtener chats
   getChats(){
     this.Authservicies.isAuth().subscribe(user=>{
-      this.uid= user.uid;
+      if(user){
+        this.uid= user.uid;
+      }
     })
     return this.db.collection('chats').snapshotChanges().pipe(map(rooms =>{
       return rooms.map(a =>{

@@ -47,8 +47,10 @@ export class DetallearticuloPage implements OnInit {
   ngOnInit() {
     
     this.auth.isAuth().subscribe(user=>{
+      if(user){
       this.idu=user.uid;
       this.articulo.userId=this.idu;
+      }
     });
 
     this.articulosUsu();
@@ -58,12 +60,14 @@ export class DetallearticuloPage implements OnInit {
   articulosUsu(){
     this.articuloService.getArticulos().subscribe( arti=>{
       this.Authservice.isAuth().subscribe(user=>{
-        this.articulos=[];
-        var cont=0;
-        for (let i = 0; i < arti.length; i++) {
-          if(arti[i].userId==user.uid){
-            this.articulos[cont]=arti[i];
-            cont++;
+        if(user){
+          this.articulos=[];
+          var cont=0;
+          for (let i = 0; i < arti.length; i++) {
+            if(arti[i].userId==user.uid){
+              this.articulos[cont]=arti[i];
+              cont++;
+            }
           }
         }
       })

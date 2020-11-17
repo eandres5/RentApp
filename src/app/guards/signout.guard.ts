@@ -23,6 +23,8 @@ export class SignoutGuard implements CanActivate {
           var authe=auth;
         var veri= authe.emailVerified;
           if(veri==false){
+            this.AFauth.signOut();
+            alert("Verifica tu correo electronico");
             return true;
           }else{
             this.router.navigate(['home/articulos']);

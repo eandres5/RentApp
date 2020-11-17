@@ -27,7 +27,7 @@ export class SignupPage implements OnInit {
     ],
     passv : [
       {type: 'required', message: 'Contraseña es requerida'},
-      {type: 'minlength', message: 'Ingrese una contraseña'}
+      {type: 'minlength', message: 'Ingrese una contraseña de 6 caracteres'}
     ],
     confirmpass:[
       {type: 'required', message: 'Contraseña es requerida'},
@@ -40,7 +40,7 @@ export class SignupPage implements OnInit {
   
   registrationForm = this.formBuilder.group({
     emailv: ['', Validators.compose([Validators.maxLength(70), Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[epn]+(\\.[edu]+)*(\\.[ec]{2,4})$'), Validators.required])],
-    passv: ['',Validators.compose([Validators.required])],
+    passv: ['',Validators.compose([Validators.required, Validators.minLength(6)])],
     confirmpass: ['',Validators.compose([Validators.required])],
     checkbox:[false, Validators.compose([this.isChecked,Validators.required])]
   },{

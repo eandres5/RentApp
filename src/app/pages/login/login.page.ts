@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
-import {FormBuilder, Validators, FormGroup, Form, FormControl} from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, Form, FormControl } from '@angular/forms';
 interface user {
   inhabilitado: boolean
 }
@@ -14,7 +14,7 @@ interface user {
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  get emailv(){
+  get emailv() {
     return this.LoginForm.get('emailv');
   }
   email: string;
@@ -22,9 +22,9 @@ export class LoginPage implements OnInit {
   token: string;
 
   public errorMessages = {
-    emailv : [
-      {type: 'required', message: 'Email es requerido'},
-      {type: 'pattern', message: 'Verifique que su correo no tenga espacios al final o al inicio'}
+    emailv: [
+      { type: 'required', message: 'Email es requerido' },
+      { type: 'pattern', message: 'Verifique que su correo no tenga espacios al final o al inicio' }
     ]
   }
   LoginForm = this.formBuilder.group({
@@ -44,34 +44,27 @@ export class LoginPage implements OnInit {
   verificacionLogin() {
     console.log("Entro a la funcion");
     this.authService.login(this.LoginForm.value['emailv'], this.password).then(res => {
+      console.log("entra a la segunda");
       this.authService.verificacionDatos().then(resd => {
-        this.AFauth.authState.subscribe(ser => {
-          this.authService.obtenernombreUsuario(ser.uid).subscribe(usa => {
-            const data: user = usa.payload.data() as user;
-            if (data.inhabilitado == true) {
-              alert("Cuenta Bloqueada!! Contactarse con rentappec@gmail.com");
-              this.AFauth.signOut().then(auth => {
-                console.log('Sesion cerrada');
-                this.router.navigate(['']);
-              })
-            } else {
-              console.log("usuario Habiitado");
-              this.router.navigate(['home/articulos']);
-              var tok = this.token
-              if (tok != null) {
-                console.log("Token............................." + this.token);
-                this.authService.updateToken(this.token);
-              }
-            }
-          })
-        })
+        console.log("habiltado");
+        this.router.navigate(['home/articulos']);
+        var tok = this.token
+        if (tok != null) {
+          console.log("Token............................." + this.token);
+          this.authService.updateToken(this.token);
+        }
       })
       this.router.navigate(['registro']);
-    }).catch(err => alert('Los datos son incorrectos o el usuario no existe'));
+      var tok = this.token
+      if (tok != null) {
+        console.log("Token............................." + this.token);
+        this.authService.updateToken(this.token);
+      }
+    }).catch(e => alert('Email o contraseña incorrecta'));
   }
   //Restablecer contraseña de usuario.
   resetPassword() {
-    this.email= this.LoginForm.value['emailv'];
+    this.email = this.LoginForm.value['emailv'];
     if (!this.email) {
       alert('Ingrese su email!');
     }

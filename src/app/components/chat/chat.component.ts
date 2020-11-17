@@ -38,10 +38,12 @@ export class ChatComponent implements OnInit {
   }
   obtenerUu() {
     this.AngularFire.authState.subscribe(user => {
-      this.AuthService.obtenernombreUsuario(user.uid).subscribe(usa => {
-        const data2: usuarioss = usa.payload.data() as usuarioss;
-        this.nombre = data2.nombre;
-      });
+      if(user){
+        this.AuthService.obtenernombreUsuario(user.uid).subscribe(usa => {
+          const data2: usuarioss = usa.payload.data() as usuarioss;
+          this.nombre = data2.nombre;
+        });
+      } 
     })
 
   }

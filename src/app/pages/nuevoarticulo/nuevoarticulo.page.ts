@@ -117,8 +117,10 @@ export class NuevoarticuloPage implements OnInit {
 
   ngOnInit() {
     this.auth.isAuth().subscribe(user => {
-      this.idu = user.uid;
+      if(user){
+        this.idu = user.uid;
       this.articulo.userId = this.idu;
+      }
     });
 
     this.fechaAr = new Date();

@@ -22,8 +22,9 @@ export class RegistroGuard implements CanActivate {
         }else{
           var authe=auth;
         var veri= authe.displayName;
+        var email= authe.emailVerified;
         var v= false;
-        if(veri==null){
+        if(veri==null && email==true){
           v=false;
         }else{
           v=true;

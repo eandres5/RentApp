@@ -47,11 +47,13 @@ export class ProfilePage implements OnInit {
   datosUsuario(){
     this.usersR=[];
     this.auth.isAuth().subscribe(us=>{
-     this.auth.obtenernombreUsuario(us.uid).subscribe(usa=>{
-       const data2 : user = usa.payload.data() as user;
-       this.usersR[0]=data2;
-       console.log(this.usersR);
-     });
+      if(us){
+        this.auth.obtenernombreUsuario(us.uid).subscribe(usa=>{
+          const data2 : user = usa.payload.data() as user;
+          this.usersR[0]=data2;
+          console.log(this.usersR);
+        });
+      }
    }
      )
   }

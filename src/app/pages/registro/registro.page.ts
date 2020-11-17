@@ -52,7 +52,7 @@ export class RegistroPage implements OnInit {
 
   profileForm = this.formBuilder.group({
     nombrev: ['', [Validators.required, Validators.minLength(5)]],
-    apellidov: ['', Validators.compose([Validators.minLength(5),  Validators.required])],
+    apellidov: ['', Validators.compose([Validators.minLength(3),  Validators.required])],
     telv: ['', Validators.pattern("^((\\+593-?)|0)?[0-9]{9}$")]
   });
   //variables para almacenar datos de usuarios
