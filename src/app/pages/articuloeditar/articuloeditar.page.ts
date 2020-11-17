@@ -370,7 +370,7 @@ export class ArticuloeditarPage implements OnInit {
               
               this.image = url;
               this.foto=this.image;
-              this.articuloService.updateCosto(this.image, this.articulo.id);
+              this.articuloService.updateImg(this.image, this.articulo.id);
               this.obtenerArticulo();
             }
           });
