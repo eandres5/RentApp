@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>Mensajeria</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarpop($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-item>
+    <ion-searchbar type="text" (ionChange)="buscar($event)"></ion-searchbar>
+  </ion-item>
+  <!--
+    (ionChange)="buscar($event)"
+  -->
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let chat of chatsR | filtro: textoBuscar : 'nombre'" (click)="openchat(chat)"> 
+      <ion-avatar slot="start">
+        <ion-img [src]='chat.img'></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <h2><b>{{chat.nombre}}</b></h2>
+        <h3><b>Chat creado por {{chat.creado}}</b></h3>
+        <p>{{chat.descripcion}}</p>
+      </ion-label>
+
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/detallearticulo"></ion-back-button>
+      <ion-title>{{ articulo.titulo }}</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+      <ion-item>
+        <ion-label>Titulo</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarTitulo()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.titulo}}
+      </ion-card-content>
+
+
+      <ion-item>
+        <ion-label>Descripción del artículo</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarDescripcion()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.descripcion}}
+      </ion-card-content>
+
+      <ion-item>
+        <ion-label>Télefono</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarTelefono()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.telefono}}
+      </ion-card-content>
+
+      <ion-item>
+        <ion-label>Costo</ion-label>
+        <ion-button color="tertiary" fill="clear" slot="end" (click)="editarCosto()">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-card-content>
+        {{articulo.costo}}
+      </ion-card-content>
+
+      <ion-item>
+        <ion-label>Disponible</ion-label>
+        <ion-checkbox color="primary" [(ngModel)]="disponible" name></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-button>Calificar usuarios</ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-card size="width: 100%">
+          <ion-card-content (click)="presentAlertCamera()">
+            <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top" value="articulo.img">
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+
+      <ion-item>
+        <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+        <ion-input [value]="downloadUrl | async" name="url"></ion-input>
+      </ion-item>
+
+  </ion-card>
+</ion-content>
