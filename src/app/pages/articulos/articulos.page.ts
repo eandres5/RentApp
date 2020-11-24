@@ -20,6 +20,8 @@ export class ArticulosPage implements OnInit {
   articulos: TaskI[];
   textoBuscar: String = '';
 
+  idu: string;
+
   articulo: TaskI = {
     id: '',
     titulo: '',
@@ -35,19 +37,44 @@ export class ArticulosPage implements OnInit {
   constructor(private popoverctrl: PopoverController,
               private articuloService: ArticuloService,
               private router: Router,
-              private fcm:FCM,public Authservicies: AuthService) { }
+              private fcm:FCM,public Authservicies: AuthService,
+              private auth:AuthService,
+              public Authservice: AuthService) { }
 
   ngOnInit() {
     
-    this.articuloService.getArticulos().subscribe(res=> {
-      this.articulos = res;
-    });
+    
     /*this.fcm.getToken().then(token=>{
       console.log(token);
       this.saveToken(token);
     });*/
+
+    this.articulosSinUsu();
+
   }
-  
+
+  articulosSinUsu(){
+    this.articuloService.getArticulos().subscribe( arti=>{
+      this.Authservice.isAuth().subscribe(user=>{
+        this.articulos=[];
+        var cont=0;
+        for (let i = 0; i < arti.length; i++) {
+          if(arti[i].userId!==user.uid){
+            this.articulos[cont]=arti[i];
+            cont++;
+          }
+        }
+        console.log(this.articulos);
+        
+      })
+      
+    });
+  }
+
+
+  saveToken(token){
+    this.Authservicies.updateToken(token);
+  }
 
 
   detalles(id: string){

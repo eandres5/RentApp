@@ -120,23 +120,21 @@ export class AuthService {
           uids = userv.uid;
           this.obtenernombreUsuario(uids).subscribe(user => {
             const data: usuarioss = user.payload.data() as usuarioss;
-            if (data.inhabilitado == false) {
+            if (data.inhabilitado == true) {
               alert("Cuenta Bloqueada!! Contactarse con rentappec@gmail.com");
               this.AFauth.signOut();
               uids = "";
               this.router.navigate(['']);
             }
-            if (nameUser != null && photourl != null && data.inhabilitado == true) {
+            if (nameUser != null && photourl != null && data.inhabilitado == false) {
               resolve(userv);
             }
           })
-
-
         }
       })
     })
-
   }
+
   //Restablecer contraseña de los usuarios
   resetPasswordInit(email: string) {
     return this.AFauth.sendPasswordResetEmail(

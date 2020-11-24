@@ -40,6 +40,7 @@ export class ReadchatsService {
   constructor(public http:HttpClient,private db: AngularFirestore, public Authservicies: AuthService) { }
   //funciones
   //obtener chats
+  
   getChats(){
     this.Authservicies.isAuth().subscribe(user=>{
       if(user){
