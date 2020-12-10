@@ -7,6 +7,12 @@ import { LoginPage } from '../pages/login/login.page';
 import { LoginPageModule } from '../pages/login/login.module';
 import { SignupPageModule } from '../pages/signup/signup.module';
 
+//guards
+import {AuthGuard} from '../guards/auth.guard';
+import {SignoutGuard} from '../guards/signout.guard';
+import {RegistroGuard} from '../guards/registro.guard';
+
+
 const routes: Routes = [
   {
     path: '',
@@ -19,19 +25,23 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        loadChildren: () => import('../pages/login/login.module').then(m => m.LoginPageModule)
+        loadChildren: () => import('../pages/login/login.module').then(m => m.LoginPageModule),canActivate:[SignoutGuard]
       },
       {
         path: 'signup',
-        loadChildren: () => import('../pages/signup/signup.module').then(m => m.SignupPageModule)
+        loadChildren: () => import('../pages/signup/signup.module').then(m => m.SignupPageModule),canActivate:[SignoutGuard]
       },
       {
         path: 'registro',
-        loadChildren: () => import('../pages/registro/registro.module').then(m => m.RegistroPageModule)
+        loadChildren: () => import('../pages/registro/registro.module').then(m => m.RegistroPageModule),canActivate:[RegistroGuard]
       },
       {
         path: 'politicas',
-        loadChildren: () => import('../pages/politicas/politicas.module').then(m => m.PoliticasPageModule)
+        loadChildren: () => import('../pages/politicas/politicas.module').then(m => m.PoliticasPageModule),canActivate:[SignoutGuard]
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)
       }
     ]
   }

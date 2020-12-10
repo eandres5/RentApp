@@ -9,7 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 //FCM
-import { FCM } from '@ionic-native/fcm/ngx';
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 //importacion de environment firebase
 
 //Firebase
@@ -50,22 +50,37 @@ import {SmsComponent} from './pages/sms/sms.component';
 */
 //importacion de angular
 
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { File } from '@ionic-native/file/ngx';
+import {ChatComponent} from 'src/app/components/chat/chat.component';
+
+//importacion del modulo de pipes
+import { PipesModule } from './pipes/pipes.module';
+
+//reactive forms module
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent,ChatComponent],
+  entryComponents: [AppComponent,ChatComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
     FormsModule,
-    HttpClientModule],
+    PipesModule,
+    HttpClientModule,
+    ReactiveFormsModule],
   providers: [
     FCM,
     StatusBar,
     SplashScreen,
     Camera,
+    WebView,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

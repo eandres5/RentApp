@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-morebtn',
@@ -11,23 +12,41 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 export class MorebtnComponent implements OnInit {
 
   darkMode: boolean = true;
+  uid: string;
+  veri: boolean =false;
 
   constructor(private router: Router,
-              private popoverctrl: PopoverController) { }
+    private popoverctrl: PopoverController, private auth: AuthService) { }
 
   ngOnInit() {
-
+    this.auth.isAuth().subscribe(user => {
+      if (user) { this.uid = user.uid; }
+    }
+    )
   }
 
   /*programacion de la barra de arriba*/
 
-  cerrarSesion(){
-    this.router.navigate(['']);
+  rentarArticulos() {
+
+    this.router.navigate(['home/rentados']);
     this.popoverctrl.dismiss();
   }
 
-  modoOscuro(){
+  cerrarSesion() {
+    console.log(this.uid)
+    this.auth.logout(this.uid);
+    this.popoverctrl.dismiss();
+  }
+
+
+  modoOscuro() {
     this.darkMode = this.darkMode;
     document.body.classList.toggle('dark');
+  }
+
+  navigateProfile() {
+    this.router.navigate(['home/profile']);
+    this.popoverctrl.dismiss();
   }
 }

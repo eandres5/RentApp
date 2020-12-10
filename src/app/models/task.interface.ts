@@ -7,4 +7,6 @@ export interface TaskI {
     telefono: string;
     costo: string;
     userId: string;
+    disponible: boolean;
+    fecha: string;
 }

@@ -1,4 +1,7 @@
-
+<ion-header>
+  <ion-toolbar color="tertiary">
+  </ion-toolbar>
+</ion-header>
 <ion-content padding>
     <ion-item>
       <ion-label style="text-align: center">Sign Up</ion-label>
@@ -39,9 +42,9 @@
     </ion-item>
   </div>
     <br>
-    <ion-item>
-      <ion-checkbox formControlName="checkbox" name="checkbox" color="dark"></ion-checkbox>
-      <ion-label style="text-align: center">Aceptó Politicas de Uso</ion-label>    
+    <ion-item style="text-align: center;">
+        <ion-checkbox formControlName="checkbox" name="checkbox" color="dark"></ion-checkbox>
+        <ion-label style="text-align: center" (click)="navigatePoliticas()"><a>Acepto Politicas de Uso RentApp</a></ion-label>  
     </ion-item>
     <br>
     <ion-button [disabled]="!registrationForm.valid" expand="block" color="tertiary"(click)="ingresarUsuario()" type="submit" class="redondos" >Registrarse</ion-button>

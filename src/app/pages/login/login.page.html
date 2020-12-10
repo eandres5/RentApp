@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
@@ -10,10 +10,17 @@
     <ion-label style="text-align: center">Iniciar Sesion</ion-label>
   </ion-item>
   <br>
+  <form [formGroup]="LoginForm">
   <ion-item>
     <ion-label position="floating" style="text-align: center">Correo Electronico</ion-label>
-    <ion-input class="redondos" type="text" name="email" [(ngModel)]="email"></ion-input>
+    <ion-input class="redondos" type="text" name="email" formControlName="emailv"></ion-input>
+    <div *ngFor="let error of errorMessages.emailv">
+      <ng-container *ngIf="LoginForm.get('emailv').hasError(error.type) && (emailv.dirty || emailv.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
   </ion-item>
+  </form> 
   <br>
   <ion-item>
     <ion-label position="floating" style="text-align: center">Contraseña</ion-label>

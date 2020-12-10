@@ -3,13 +3,18 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
-
+import { Observable } from 'rxjs';
+import { clsprofile } from '../backend/clsprofile';
 //interface de usuarios
 
 interface usuarioss {
   uid: string,
-  token: string
+  token: string,
+  nombre:string,
+  apellido:string,
+  inhabilitado: boolean
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,17 +27,7 @@ export class AuthService {
     return new Promise((resolve, rejected) => {
       //Logueo de usuario con email y password 
       this.AFauth.signInWithEmailAndPassword(usuario, password).then(user => {
-        //Verificacion de cuenta verificada por email.
-        this.AFauth.onAuthStateChanged(function (userv) {
-          var emailVerificado = userv.emailVerified;
-          console.log(userv.uid);
-          if (emailVerificado == true) {
-            resolve(user)
-            console.log("Email verificado");
-          } else {
-            console.log("Email no verificado ");
-          }
-        })
+        resolve(user)
       }).catch(err => rejected(err));
     })
   }
@@ -42,46 +37,41 @@ export class AuthService {
   }
   //Funcion para el registro de token 
   guardarToken(ui: string, tokenr: string) {
+    console.log(ui);
     this.db.collection('users').doc(ui).update({ token: tokenr });
   }
   //Funcion para update el token en caso de que el usuario haya cambiado de equipo
   updateToken(tokenr: string) {
     this.isAuth().subscribe(user => {
-      this.obtenernombreUsuario(user.uid).subscribe(usa => {
-        const data2: usuarioss = usa.payload.data() as usuarioss;
-        var token = data2.token;
-        var uid = data2.uid;
-        console.log("Este es el token :" + token);
-        if (token == null) {
-          this.guardarToken(uid, tokenr);
-        } else {
-          if (tokenr != token) {
-            console.log("cambio de equipo");
-            this.db.collection('users').doc(user.uid).update({ token: tokenr });
-          }
-        }
-
-      })
-
-
+      this.guardarToken(user.uid, tokenr);
     });
   }
+  eliminartoken(uid: string) {
+    return this.db.collection('users').doc(uid).update({ token: " " });
+  }
   //Cierre de Sesion
-  logout() {
-    this.AFauth.signOut().then(auth => {
-      this.router.navigate(['/home']);
+  logout(uideee: string) {
+    var uid = uideee;
+    this.eliminartoken(uid).then(res => {
+      this.AFauth.signOut();
+      this.router.navigate(['']);
+      uid = "";
     })
+
   }
   //registrar Chat
-  registrarChat(nombre: string, detalle: string, img: string) {
+  registrarChat(nombre: string, detalle: string, img: string, idp: string, nomu: string) {
+    console.log(nomu);
     this.isAuth().subscribe(user => {
       var userid = user.uid;
       this.db.collection('chats').add({
         nombre: nombre,
+        creado: nomu,
         descripcion: detalle,
         img: img,
         users: {
-          userr: userid
+          userr: userid,
+          uidp: idp
         }
       })
 
@@ -95,7 +85,8 @@ export class AuthService {
         const uid = res.user.uid;
         this.db.collection('users').doc(res.user.uid).set({
           uid: uid,
-          correo: email
+          correo: email,
+          token: ""
         })
         this.AFauth.onAuthStateChanged(function (userv) {
           var emailVerificado = userv.emailVerified;
@@ -106,28 +97,48 @@ export class AuthService {
           } else {
             console.log("Email no verificado");
             userv.sendEmailVerification().then(function () {
-              console.log("email enviado al correo");
+              alert('Correo electronico enviado. Verifica tu cuenta!!');
+
             });
           }
         })
 
-      }).catch(err => reject(err));
+      }).catch(err => {
+        reject(err)
+        alert('El correo ya se encuentra registrado');
+        this.router.navigate(['login']);
+      }
+
+      );
     })
 
   }
   //verificacion de datos
   verificacionDatos() {
+    var uids = "";
     return new Promise((resolve) => {
-      this.AFauth.onAuthStateChanged(function (userv) {
-        var nameUser = userv.displayName;
-        var photourl = userv.photoURL;
-        if (nameUser != null && photourl != null) {
-          resolve(userv);
+      this.isAuth().subscribe(userv => {
+        if (userv) {
+          var nameUser = userv.displayName;
+          var photourl = userv.photoURL;
+          uids = userv.uid;
+          this.obtenernombreUsuario(uids).subscribe(user => {
+            const data: usuarioss = user.payload.data() as usuarioss;
+            if (data.inhabilitado == true) {
+              alert("Cuenta Bloqueada!! Contactarse con rentappec@gmail.com");
+              this.AFauth.signOut();
+              uids = "";
+              this.router.navigate(['']);
+            }
+            if (nameUser != null && photourl != null && data.inhabilitado == false) {
+              resolve(userv);
+            }
+          })
         }
-      });
-    });
-
+      })
+    })
   }
+
   //Restablecer contraseña de los usuarios
   resetPasswordInit(email: string) {
     return this.AFauth.sendPasswordResetEmail(
@@ -136,6 +147,44 @@ export class AuthService {
   //Usuario autenticado
   isAuth() {
     return this.AFauth.authState.pipe(map(auth => auth));
+  }
+  //actualizacion de datos usuario
+  updateNombreApellido(nombreu: String, apellidou: String) {
+    this.AFauth.authState.subscribe(auth => {
+      this.db.collection('users').doc(auth.uid).update({
+        nombre: nombreu,
+        apellido: apellidou
+      }).then(() => {
+        this.isAuth().subscribe(user => {
+          if (user) {
+            user.updateProfile({
+              displayName: nombreu + " " + apellidou
+            }).then(function () {
+              console.log('User Update');
+
+            }).catch(function (error) {
+              console.log('error', error);
+            });
+          }
+        });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    })
+  }
+  updatePhone(phone: number) {
+    this.AFauth.authState.subscribe(auth => {
+      this.db.collection('users').doc(auth.uid).update({
+        telefono: phone
+      }).then(() => {
+        console.log("Actualizado");
+      }).catch(function (err) {
+        console.log(err);
+      });
+    })
+  }
+  obtenerDatos(uid: string) {
+    return this.db.collection('users').doc(uid).get();
   }
 
 
