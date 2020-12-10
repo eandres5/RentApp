@@ -58,19 +58,19 @@ export class NuevoarticuloPage implements OnInit {
 
   //variables para el form de articulo
 
-  get tituloa(){
+  get tituloa() {
     return this.articuloForm.get('tituloa');
   }
 
-  get descripciona(){
+  get descripciona() {
     return this.articuloForm.get('descripciona');
   }
 
-  get descrtelefonoaipciona(){
+  get descrtelefonoaipciona() {
     return this.articuloForm.get('telefonoa');
   }
 
-  get costoa(){
+  get costoa() {
     return this.articuloForm.get('telefonoa');
   }
 
@@ -79,14 +79,14 @@ export class NuevoarticuloPage implements OnInit {
       { type: 'required', message: '*' },
       { type: 'pattern', message: 'Debe ingresar el titulo del articulo' }
     ],
-    descripciona:[
+    descripciona: [
       { type: 'required', message: '*' },
       { type: 'pattern', message: 'Ingrese una descripción para el articulo' }
     ],
-    telefonoa:[
-      {type: 'pattern', message: 'Número incorrecto, por favor verifique el número'}
+    telefonoa: [
+      { type: 'pattern', message: 'Número incorrecto, por favor verifique el número' }
     ],
-    costoa:[
+    costoa: [
       { type: 'pattern', message: 'Debe ingresar el costo del articulo' }
     ]
 
@@ -117,9 +117,9 @@ export class NuevoarticuloPage implements OnInit {
 
   ngOnInit() {
     this.auth.isAuth().subscribe(user => {
-      if(user){
+      if (user) {
         this.idu = user.uid;
-      this.articulo.userId = this.idu;
+        this.articulo.userId = this.idu;
       }
     });
 
@@ -147,17 +147,16 @@ export class NuevoarticuloPage implements OnInit {
     this.articulo.telefono = '0' + this.articuloForm.value['telefonoa'];
     this.articulo.costo = this.articuloForm.value['costoa'];
     this.articulo.img = this.image;
-    
-    console.log(this.articulo); 
-    
+
+    console.log(this.articulo);
+
     this.articuloService.addArticulo(this.articulo).then(() => {
       this.router.navigate(['/home/nuevoarticulo']);
       this.confirmacionArticulo();
       this.cancelar();
     }, err => {
     });
-    
-    
+
   }
 
   async addPhoto(source: string) {
@@ -196,14 +195,14 @@ export class NuevoarticuloPage implements OnInit {
           finalize(() => this.downloadUrl = ref.getDownloadURL())
         ).subscribe();
 
-        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot) => {
           console.log("Imagen subida");
           const downloadURL = ref.getDownloadURL();
-          downloadURL.subscribe(url=>{
-            if(url){
-         
+          downloadURL.subscribe(url => {
+            if (url) {
+
               this.image = url;
-              this.foto=this.image;
+              this.foto = this.image;
             }
           });
         });
@@ -245,14 +244,14 @@ export class NuevoarticuloPage implements OnInit {
           finalize(() => this.downloadUrl = ref.getDownloadURL())
         ).subscribe();
 
-        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot)=>{
+        task.then((uploadSnapshot: firebase.storage.UploadTaskSnapshot) => {
           console.log("Imagen subida");
           const downloadURL = ref.getDownloadURL();
-          downloadURL.subscribe(url=>{
-            if(url){
-              
+          downloadURL.subscribe(url => {
+            if (url) {
+
               this.image = url;
-              this.foto=this.image;
+              this.foto = this.image;
             }
           });
         });
@@ -324,7 +323,7 @@ export class NuevoarticuloPage implements OnInit {
   }
 
   //alerta de mensajes
-  async confirmacionArticulo(){
+  async confirmacionArticulo() {
     const toast = await this.toastController.create({
       color: 'dark',
       message: 'Artículo creado con exito!',

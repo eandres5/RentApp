@@ -33,6 +33,10 @@
       <ion-item>
         <ion-icon name="person" slot="start"></ion-icon>
         <ion-label>Nombre</ion-label>
+        <!--
+          para editar el nombre
+          <ion-button color="tertiary" fill="clear" slot="end" (click)="presentAlertNombreApellido()"> <ion-icon name="pencil"></ion-icon> </ion-button>
+        -->
       </ion-item>
       <ion-card-content>
         {{user.nombre}} {{user.apellido}}
@@ -58,4 +62,28 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
+
+  <ion-card>
+    <ion-item>
+      <ion-label>
+        <h1>Puntuación del Usuario</h1>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label><h2>{{ calificacionTotal }}</h2></ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h1>Comentarios</h1>
+      </ion-label>
+    </ion-item>
+    <ion-list *ngIf="room">
+      <ion-item *ngFor="let comentario of room.comentariosUsuarios">
+        <ion-label>
+          {{comentario.content}}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
 </ion-content>

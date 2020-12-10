@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ReadchatsService } from 'src/app/services/readchats.service';
 import { ComentarioserviceService } from 'src/app/services/comentarioservice.service';
 import { ComentarioI } from 'src/app/models/comentarios.interface';
+import { UsuariosComentariosI } from 'src/app/models/usuariosComentarios.interface';
 
 
 interface user {
@@ -30,12 +31,19 @@ export class DetalleverPage implements OnInit {
   public nombreu: string;
 
   public comentariosUsuarios: any = [];
-  public comen: any = [];
-
+  public comenartuid: any = [];
+  public comentauid: any = [];
   public usuarioData = [];
   public usuarioData2 = [];
 
+
+  comen2: any = [];
+
   idu: string;
+
+  usuariosComentario: UsuariosComentariosI = {
+    idUsuarioRenta: ''
+  }
 
   comentario: ComentarioI = {
     idPropietarioComen: '',
@@ -67,14 +75,12 @@ export class DetalleverPage implements OnInit {
 
   ngOnInit() {
     this.auth.isAuth().subscribe(user => {
-      if(user){
+      if (user) {
         this.idu = user.uid;
       }
     });
-  }
 
-  regresar() {
-    this.router.navigate(['home/articulos']);
+    this.cargarComentarios();
   }
 
   ngAfterViewInit(): void {
@@ -82,72 +88,100 @@ export class DetalleverPage implements OnInit {
     if (id) {
       this.articuloService.getArticulo(id).subscribe(articuloData => {
         this.articulo = articuloData;
-        console.log(this.articulo);
       });
     }
   }
 
+  cargarComentarios() {
+    this.comentarioservice.getComentarios2().subscribe(res => {
+      this.comentariosUsuarios = res;
+    });
+  }
+
   registrarComentario() {
     this.verificarComentario(this.articulo.titulo, this.articulo.img);
+    alert("Ahora puedes calificar al usuario desde mis Rentas!.");
+    this.chatservice.enviarNotificacionRenta(this.articulo.userId,this.articulo.titulo)
   }
 
   verificarComentario(titulo: string, img: string) {
-
-    this.comentarioservice.getComentarios().subscribe(comentarios => {
-      let contador = 0;
-      let contador2 = 0;
-      for (let i = 0; i < comentarios.length; i++) {
-        this.comentariosUsuarios[contador] = comentarios[i];
-        contador++;
-      }
+    var usu1 = false;
+    var usu2 = false;
+    this.comentarioservice.getComen().subscribe(comentarios=>{
+      var contador = 0;
+      var contador2 = 0;
+      var contador3 = 0;
       console.log(this.comentariosUsuarios);
+          for (let i = 0; i < this.comentariosUsuarios.length; i++) {
+            if (this.comentariosUsuarios[i].idPropietarioComen == this.articulo.userId) {
+              this.comenartuid[contador2] = this.comentariosUsuarios[i];
+              usu1 = true;
+              contador2++;
+            }
+            if (this.comentariosUsuarios[i].idPropietarioComen == this.idu) {
+              this.comentauid[contador3] = this.comentariosUsuarios[i];
+              usu2 = true;
+              contador3++;
+            }
+          }
+          contador=0;
+          contador2=0;
+          contador3=0;
+          this.agregarDocumentoArticulo(usu1, usu2);
+          usu1=false;
+          usu2=false;
+        
+      })
+    
+  }
+  agregarDocumentoArticulo(usu1: boolean, usu2: boolean) {
+    if (usu1 == false) {
+      console.log("no existe objeto se va ha crear usu1");
+      var uidarticuloUsu = this.articulo.userId;
+      this.auth.obtenerDatos(uidarticuloUsu).subscribe(usa=>{
+        if(usa){
+          const data: user = usa.data() as user;
+        this.usuarioData[0] = data;
+        this.comentario.nombre = this.usuarioData[0].nombre;
+        this.comentario.apellido = this.usuarioData[0].apellido;
+        this.comentario.idPropietarioComen = this.articulo.userId;
+        this.comentario.usuarios = { idUsuarioRenta: this.idu };
+        this.comentarioservice.agregarComen(this.comentario.nombre,this.comentario.apellido,this.comentario.idPropietarioComen,this.comentario.usuarios.idUsuarioRenta);
+        uidarticuloUsu = "";
 
-      for (let i = 0; i < this.comentariosUsuarios.length; i++) {
-        if (this.comentariosUsuarios[i].idPropietarioComen == this.articulo.userId) {
-          this.comen[contador2] = this.comentariosUsuarios[i];
-          contador2++;
         }
+      })
+    } else {
+      if (usu1 == true) {
+        console.log("existe1");
+        this.usuariosComentario.idUsuarioRenta == this.idu;
+        this.comentarioservice.addUsers(this.idu, this.comenartuid[0].id);
       }
+    }
 
-      console.log(this.comen);
-
-      if (this.comen.length == 0) {
-        console.log("no existe objeto se va ha crear");
-
-        this.auth.obtenernombreUsuario(this.articulo.userId).subscribe(usa => {
-
-          const data: user = usa.payload.data() as user;
-          this.usuarioData[0] = data;
-          console.log(this.usuarioData);
-
-          this.comentario.nombre = this.usuarioData[0].nombre;
-          this.comentario.apellido = this.usuarioData[0].apellido;
-          this.comentario.idPropietarioComen = this.articulo.userId;
-          this.comentario.usuarios = { idUsuarioRenta: this.idu };
-          this.comentarioservice.addComentario(this.comentario);
-        });
-
-        this.auth.obtenernombreUsuario(this.idu).subscribe(usa => {
-
-          const data2: user = usa.payload.data() as user;
+    if (usu2 == false) {
+      console.log("no existe objeto se va ha crear usu2");
+      var articulousuaLo = this.idu;
+      this.auth.obtenerDatos(articulousuaLo).subscribe(usa=>{
+        if(usa){
+          const data2: user = usa.data() as user;
           this.usuarioData2[0] = data2;
-          console.log(this.usuarioData2);
-
           this.comentario.nombre = this.usuarioData2[0].nombre;
           this.comentario.apellido = this.usuarioData2[0].apellido;
           this.comentario.idPropietarioComen = this.idu;
           this.comentario.usuarios = { idUsuarioRenta: this.articulo.userId };
-          this.comentarioservice.addComentario(this.comentario);
-        });
-
-
-      } else if (this.comen.length > 0) {
-        console.log("valida que cree al otro usuario");
+          this.comentarioservice.agregarComen(this.comentario.nombre,this.comentario.apellido,this.comentario.idPropietarioComen,this.comentario.usuarios.idUsuarioRenta);
+          articulousuaLo = "";
+        }
+      })
+    } else {
+      if (usu2 == true) {
+        console.log("existe 2");
+        this.usuariosComentario.idUsuarioRenta == this.articulo.userId;
+        this.comentarioservice.addUsers(this.articulo.userId, this.comentauid[0].id);
       }
-
-    });
+    }
   }
-
   registrarChat() {
     this.obtenerChat(this.articulo.titulo, this.articulo.descripcion, this.articulo.img);
   }
@@ -155,7 +189,6 @@ export class DetalleverPage implements OnInit {
   obtenerChat(nombre: string, detalle: string, img: string) {
     this.chatservice.getChats().subscribe(chats => {
       this.auth.isAuth().subscribe(user => {
-        console.log(user);
         this.user = user.uid;
         this.nombreu = user.displayName;
         var contador = 0;
@@ -171,13 +204,11 @@ export class DetalleverPage implements OnInit {
         var con = 0
         for (let i = 0; i < this.chatsR.length; i++) {
           if (this.chatsR[i].nombre == nombre && this.chatsR[i].img == img) {
-            console.log("Entra al if " + this.chatsR[i].nombre);
             this.c[con] = this.chatsR[i];
             con++;
           }
         }
         if (this.c.length == 0) {
-          console.log("no existe chat");
           if (this.articulo.userId == this.user) {
             alert("Articulo de su propiedad no puede contactarse a usted mismo");
             this.regresar();
@@ -186,14 +217,15 @@ export class DetalleverPage implements OnInit {
             this.router.navigate(['home/chatgeneral']);
           }
         } else {
-          console.log("existe chat");
           this.router.navigate(['home/chatgeneral']);
         }
       })
     });
   }
 
-
+  regresar() {
+    this.router.navigate(['home/articulos']);
+  }
 
   navigatePerfil(id: string) {
     this.router.navigate(['home/showprofile/' + id]);

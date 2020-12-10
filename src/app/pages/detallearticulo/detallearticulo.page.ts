@@ -47,10 +47,8 @@ export class DetallearticuloPage implements OnInit {
   ngOnInit() {
     
     this.auth.isAuth().subscribe(user=>{
-      if(user){
       this.idu=user.uid;
       this.articulo.userId=this.idu;
-      }
     });
 
     this.articulosUsu();

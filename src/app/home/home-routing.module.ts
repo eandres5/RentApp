@@ -36,8 +36,16 @@ const routes: Routes = [
         loadChildren: () => import('../pages/articuloeditar/articuloeditar.module').then( m => m.ArticuloeditarPageModule)},
       {
         path: 'showprofile/:id',
-        loadChildren: () => import('../pages/showprofile/showprofile.module').then( m => m.ShowprofilePageModule)
+        loadChildren: () => import('../pages/showprofile/showprofile.module').then( m => m.ShowprofilePageModule)},
+      {
+        path: 'rentados',
+        loadChildren: () => import('../pages/rentados/rentados.module').then( m => m.RentadosPageModule)
       },
+      {
+        path: 'comentario/:id',
+        loadChildren: () => import('../pages/comentario/comentario.module').then( m => m.ComentarioPageModule)
+      }
+      
     ]
   }
 ];

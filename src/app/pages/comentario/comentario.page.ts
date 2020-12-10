@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ComentarioI } from 'src/app/models/comentarios.interface';
 import { AlertController } from '@ionic/angular';
+import { MensajeComentarioI } from 'src/app/models/mensajeComentario.interface';
 
 @Component({
   selector: 'app-comentario',
@@ -14,6 +15,10 @@ export class ComentarioPage implements OnInit {
 
   comentarioUsuario: string;
   calificacionUsuario: number;
+
+  mensajeComentario: MensajeComentarioI ={
+    content: ''
+  }
   comentarioTs: ComentarioI = {
     id: '',
     idPropietarioComen: '',
@@ -91,10 +96,11 @@ export class ComentarioPage implements OnInit {
       this.calificacionUsuario = this.comentarioForm.value['calificaciona'];
       console.log(this.comentarioUsuario);
       console.log(this.comentarioTs.id);
-      this.comentarioservice.guadarComentario(this.comentarioUsuario, this.comentarioTs.id);
+      this.mensajeComentario.content = this.comentarioUsuario;
+      this.comentarioservice.guadarComentario(this.mensajeComentario, this.comentarioTs.id);
       this.comentarioservice.guadarCalificacion(this.calificacionUsuario, this.comentarioTs.id);
       this.comentarioForm.reset();
-      this.router.navigate(['']);
+      this.router.navigate(['/home/rentados']);
     }
 
   }

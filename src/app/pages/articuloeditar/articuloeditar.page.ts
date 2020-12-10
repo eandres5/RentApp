@@ -254,6 +254,50 @@ export class ArticuloeditarPage implements OnInit {
     await alerta.present();
   }
 
+  async editarDisponible(){
+    console.log(this.disponible);
+    if(this.disponible == true){
+
+      console.log("tu articulo ya no esta disponible");
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Estado de tu artículo',
+        message: 'Tu articulo ya no esta disponible',
+        buttons: [
+          {
+            text: 'Entendido',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              this.articuloService.updateDisponible(false, this.articulo.id);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    }else{
+
+      console.log("tu articulo ya esta disponible");
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Estado de tu artículo',
+        message: 'Tu articulo ya se encuentra disponible',
+        buttons: [
+          {
+            text: 'Entendido',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              this.articuloService.updateDisponible(true, this.articulo.id);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    }
+    
+  }
+
   async presentAlertCamera() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',

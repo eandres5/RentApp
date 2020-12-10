@@ -61,6 +61,7 @@ import { PipesModule } from './pipes/pipes.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
+
 @NgModule({
   declarations: [AppComponent,ChatComponent],
   entryComponents: [AppComponent,ChatComponent],

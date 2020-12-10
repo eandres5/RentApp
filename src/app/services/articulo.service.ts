@@ -105,4 +105,12 @@ export class ArticuloService {
       console.log(err);
     });
   }
+
+  updateDisponible(estado: any, id: string){
+    return this.articuloCollection.doc(id).update({disponible: estado}).then(()=>{
+      console.log("actualizado");
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 }

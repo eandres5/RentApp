@@ -25,6 +25,8 @@ interface sms{
 }
 interface user{
   uid: string,
+  nombre: string,
+  apellido: string,
   token: string
 }
 
@@ -35,11 +37,14 @@ export class ReadchatsService {
   //variables
   public uid: string;
   public token: string;
+  public tokenn: string;
   public usuarioen: string;
+  public usuarioArticulo: string;
   public chats : any =[];
   constructor(public http:HttpClient,private db: AngularFirestore, public Authservicies: AuthService) { }
   //funciones
   //obtener chats
+  
   getChats(){
     this.Authservicies.isAuth().subscribe(user=>{
       if(user){
@@ -117,6 +122,47 @@ export class ReadchatsService {
               
             },
             "to": this.token
+          }
+          let url = 'https://fcm.googleapis.com/fcm/send';
+          this.http.post(url, notification, options).subscribe(data => {
+            console.log('enviado');
+        }, error => {
+            console.log('error saving token', error);
+        });
+  }
+
+  enviarNotificacionRenta(idusuariotoken:string, titulo:string ){
+    console.log(idusuariotoken);
+    this.db.collection("users").doc(idusuariotoken).snapshotChanges().subscribe( usu=>{
+      const data3 : user = usu.payload.data() as user;
+        var tokennn= data3.token;
+        var nombre= data3.nombre+ " " + data3.apellido;
+        this.tokenn= tokennn;
+        this.usuarioArticulo=nombre;
+        console.log(this.tokenn);
+        console.log(this.usuarioArticulo);
+        this.sendnotificacionRenta(titulo, this.usuarioArticulo);
+    })
+    
+    
+  }
+
+  sendnotificacionRenta(titulo:string, nombre: string){
+    console.log("entro a la funcion"+ titulo + nombre+ this.tokenn);
+          let options = {headers: new HttpHeaders({'Authorization': 'key=AAAAkptO3BA:APA91bFn2799tCDyL7TXPwMUaPeFo5p2_WyL49jyUbmj3WZb-DwIhhvnNClL6DLgeo769XsosUs9lXqDj2pWjqtP3pATpCWqVifywm7Tu6hazA0A-0f0RflQ9juUcERpHrz-Gqnv_oxM',
+           'Content-Type': 'application/json' })}
+           //estructura de notificacion.
+          let notification = {
+            "notification": {
+              "title": titulo,
+              "body":"Rentaron tu artículo",
+              "click_action": "FCM_PLUGIN_ACTIVITY",
+              "sound": "default",
+              "icon": "ic_launcher"
+            }, "data": {
+              
+            },
+            "to": this.tokenn
           }
           let url = 'https://fcm.googleapis.com/fcm/send';
           this.http.post(url, notification, options).subscribe(data => {

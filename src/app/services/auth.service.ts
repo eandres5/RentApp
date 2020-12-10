@@ -3,11 +3,15 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { clsprofile } from '../backend/clsprofile';
 //interface de usuarios
 
 interface usuarioss {
   uid: string,
   token: string,
+  nombre:string,
+  apellido:string,
   inhabilitado: boolean
 }
 
@@ -120,23 +124,21 @@ export class AuthService {
           uids = userv.uid;
           this.obtenernombreUsuario(uids).subscribe(user => {
             const data: usuarioss = user.payload.data() as usuarioss;
-            if (data.inhabilitado == false) {
+            if (data.inhabilitado == true) {
               alert("Cuenta Bloqueada!! Contactarse con rentappec@gmail.com");
               this.AFauth.signOut();
               uids = "";
               this.router.navigate(['']);
             }
-            if (nameUser != null && photourl != null && data.inhabilitado == true) {
+            if (nameUser != null && photourl != null && data.inhabilitado == false) {
               resolve(userv);
             }
           })
-
-
         }
       })
     })
-
   }
+
   //Restablecer contraseña de los usuarios
   resetPasswordInit(email: string) {
     return this.AFauth.sendPasswordResetEmail(
@@ -182,7 +184,6 @@ export class AuthService {
     })
   }
   obtenerDatos(uid: string) {
-    console.log(this.db.collection('users').doc(uid).get());
     return this.db.collection('users').doc(uid).get();
   }
 

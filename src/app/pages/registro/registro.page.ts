@@ -84,7 +84,9 @@ export class RegistroPage implements OnInit {
 
   ngOnInit() {
     this.auth.isAuth().subscribe(user=>{
-      this.iduser=user.uid;
+      if(user){
+        this.iduser=user.uid;
+      }
     })
     this.c="assets/images/camera.png";
   }

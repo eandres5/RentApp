@@ -10,6 +10,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Photo } from 'src/app/models/foto.interface';
 import { File } from '@ionic-native/file/ngx';
+import { ComentarioserviceService } from 'src/app/services/comentarioservice.service';
+import { ComentarioI } from 'src/app/models/comentarios.interface';
 
 interface user{
   uid:string,
@@ -31,13 +33,22 @@ export class ProfilePage implements OnInit {
   public image: string;
   uploadPercent: Observable<number>;
   urlImage: Observable<string>;
+  comentarios: ComentarioI[];
+  comen: any[];
+  idu: string;
+  idComentario: any;
+  calificacionTotal: any;
+
+  public room: any;
 
   constructor(private camera: Camera,
     private platform: Platform,
     private file: File,
     private router: Router, private auth: AuthService,public alertController: AlertController,
     private storage: AngularFireStorage, 
-    private db: AngularFirestore, private authF: AngularFireAuth) { }
+    private db: AngularFirestore, 
+    private authF: AngularFireAuth,
+    private comentarioService: ComentarioserviceService) { }
 
   ngOnInit() {
     //inicia datos usuario
@@ -51,7 +62,8 @@ export class ProfilePage implements OnInit {
         this.auth.obtenernombreUsuario(us.uid).subscribe(usa=>{
           const data2 : user = usa.payload.data() as user;
           this.usersR[0]=data2;
-          console.log(this.usersR);
+          console.log(this.usersR[0].uid);
+          this.cargarCalificaciones(this.usersR[0].uid);
         });
       }
    }
@@ -338,5 +350,41 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
+  //seccion de comentarios
+  cargarCalificaciones(idUsuario: string) {
+    this.comentarioService.getComentarios().subscribe(res => {
+      this.comentarios = [];
+      var contador = 0;
+      for (let i = 0; i < res.length; i++) {
+        if (res[i].idPropietarioComen == idUsuario) {
+          this.comentarios[contador] = res[i];
+          contador++;
+          this.idComentario = res[i].id;
+          //console.log(this.idComentario);
+
+          this.comentarioService.getComentarioRoom(this.idComentario).subscribe(room => {
+            console.log(room);
+            this.room = room;
+
+            console.log(this.room.calificacionUsuarios.length);
+
+            var promedio = 0.0;
+            var dividir = 0.0;
+            for(let i = 0; i < this.room.calificacionUsuarios.length; i++){
+              promedio = this.room.calificacionUsuarios[i] + promedio;
+              dividir = promedio/this.room.calificacionUsuarios.length;
+
+              this.calificacionTotal = dividir;
+
+              console.log(this.calificacionTotal);
+              
+            }
+
+          });
+        }
+      }
+    });
+
+  }
 
 }

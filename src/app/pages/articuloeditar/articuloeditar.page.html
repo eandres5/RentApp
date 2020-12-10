@@ -53,11 +53,7 @@
 
       <ion-item>
         <ion-label>Disponible</ion-label>
-        <ion-checkbox color="primary" [(ngModel)]="disponible" name></ion-checkbox>
-      </ion-item>
-
-      <ion-item>
-        <ion-button>Calificar usuarios</ion-button>
+        <ion-checkbox color="primary" [(ngModel)]="disponible" (click)="editarDisponible()"></ion-checkbox>
       </ion-item>
 
       <ion-item>
