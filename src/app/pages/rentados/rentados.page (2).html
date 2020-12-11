@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>Calificar Usuarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <!--El pipe se le importa en pagina.module.ts para que funcione
+      *ngFor="let articulo of articulos | filtro: textoBuscar"
+    -->
+    <ion-item *ngFor="let comentario of comentariost">
+      <ion-label>
+        <h1>{{comentario.nombre}} {{comentario.apellido}}</h1>
+      </ion-label>
+      <ion-button slot="end" (click)="calificar(comentario.id)">calificar</ion-button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

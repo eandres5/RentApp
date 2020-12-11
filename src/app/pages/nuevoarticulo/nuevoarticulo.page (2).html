@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-title>Publica</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarpop($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <form [formGroup]="articuloForm" (ngSubmit)="nuevo()">
+      <ion-item>
+        <ion-label position="floating">Título</ion-label>
+        <ion-input formControlName="tituloa" name="tituloa"></ion-input>
+        <div *ngFor="let error of errorMessages.tituloa">
+          <ng-container *ngIf="articuloForm.get('tituloa').hasError(error.type) && (tituloa.dirty || tituloa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Ingresa una breve descripción del artículo</ion-label>
+        <ion-textarea clear rows="3" type="text" formControlName="descripciona" name="descripciona">
+        </ion-textarea>
+        <div *ngFor="let error of errorMessages.descripciona">
+          <ng-container *ngIf="articuloForm.get('descripciona').hasError(error.type) && (descripciona.dirty || descripciona.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Télefono</ion-label>
+        <ion-input type="number" clear type="number" formControlName="telefonoa" name="telefonoa"></ion-input>
+        <div *ngFor="let error of errorMessages.telefonoa">
+          <ng-container *ngIf="articuloForm.get('telefonoa').hasError(error.type) && (telefonoa.dirty || telefonoa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Costo</ion-label>
+        <ion-input type="number" clear type="number" formControlName="costoa" name="costoa"></ion-input>
+        <div *ngFor="let error of errorMessages.costoa">
+          <ng-container *ngIf="articuloForm.get('costoa').hasError(error.type) && (costoa.dirty || costoa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-card size="width: 100%">
+          <ion-card-content (click)="presentAlertCamera()">
+            <img [src]="foto" class="card-img-top">
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+
+      <ion-item>
+        <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+        <ion-input [value]="downloadUrl | async" name="url"></ion-input>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row justify-content-center align-items-end style="height:100%">
+          <ion-col col-2>
+          </ion-col>
+          <ion-col col-8>
+            <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="nuevo()"
+            [disabled]="!articuloForm.valid">Publicar
+            </ion-button>
+          </ion-col>
+          <ion-col col-2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row justify-content-center align-items-end style="height:100%">
+          <ion-col col-2>
+          </ion-col>
+          <ion-col col-8>
+            <ion-button color="danger" (click)="cancelar()" style="width: 100%; position: center;">Cancelar
+            </ion-button>
+          </ion-col>
+          <ion-col col-2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </ion-card>
+</ion-content>

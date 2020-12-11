@@ -1,0 +1,20 @@
+
+ .fileInput {
+    opacity: 0;
+    width:75px;
+    height:75px;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.fileInput   label {
+    color: white;
+    background-color: black;
+    display: inline-block;
+    cursor: pointer;
+    padding: .5em 1em;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+

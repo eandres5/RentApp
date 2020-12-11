@@ -1,0 +1,79 @@
+<ion-header>
+  
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/articulos"></ion-back-button>
+      <ion-title>{{ articulo.titulo }}</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-card size="width: 100%">
+        <ion-card-content>
+          <img [src]="articulo.img == '' ? '/assets/images/camera.png' : articulo.img" class="card-img-top">
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-card-content>
+
+  <ion-card>
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-2>
+        </ion-col>
+        <ion-col col-8>
+          <ion-button color="tertiary" (click)="registrarComentario()" style="width: 100%; position: center;">RENTAR
+          </ion-button>
+        </ion-col>
+        <ion-col col-2>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <br>
+    <ion-label>
+      <h1>{{ articulo.titulo }}</h1>
+      <br>
+    </ion-label>
+
+    <ion-label>
+      <h2>Descripción del articulo</h2>
+      <p>{{articulo.descripcion}}</p>
+      <br>
+      <h2>Costo</h2>
+      <p>{{articulo.costo}} $</p>
+      <br>
+    </ion-label>
+
+    <ion-label>
+      <h2>Contacto</h2>
+      <p> 0{{articulo.telefono}}</p>
+      <br>
+    </ion-label>
+
+    <ion-grid>
+      <ion-row justify-content-center align-items-end style="height:100%">
+        <ion-col col-2>
+          <!--cambiar a registrarChat()-->
+          <ion-button expand="block" color="primary" style="width: 100%; position: center;"
+            [btnDisabled]="habilitar" (click)="registrarChat()"> Mensaje <ion-icon name="chatbubbles-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col>
+        </ion-col>
+        <ion-col col-2>
+          <ion-button expand="block" color="primary" style="width: 100%; position: center;"
+            [btnDisabled]="habilitar" (click)="navigatePerfil(articulo.id)"> Perfil Usuario <ion-icon name="person-circle"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    
+  </ion-card>
+
+</ion-content>

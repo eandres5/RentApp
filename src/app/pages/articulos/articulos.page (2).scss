@@ -1,0 +1,23 @@
+.item ion-thumbnail {
+    min-width: 7rem;    
+    min-height: 7rem;
+    img {
+        max-width: 7rem;    
+        min-width: 7rem;
+    }
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 17px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: right;
+    font-family: Arial;
+    text-transform: uppercase;
+}
