@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label style="text-align: center;">Seleccione Imagen</ion-label>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+      </ion-col>
+      <ion-col class="ion-align-self-center">
+        <label (click)="presentAlertCamera()">
+          <ion-avatar><img [src]="c" /></ion-avatar>
+        </label>
+      </ion-col>
+      <ion-col>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-progress-bar [value]="(uploadPercent | async )"></ion-progress-bar>
+  <ion-input #imageUser type="hidden" [value]="urlImage | async" name="url"></ion-input>
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+    <ion-item>
+      <ion-label position="floating" style="text-align: center">Ingrese Nombre</ion-label>
+      <ion-input formControlName="nombrev" type="text" name="nombrev"></ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.nombrev">
+      <ng-container *ngIf="profileForm.get('nombrev').hasError(error.type) && (nombrev.dirty || nombrev.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+    <br>
+    <ion-item>
+      <ion-label position="floating" style="text-align: center">Ingrese su Apellido</ion-label>
+      <ion-input formControlName="apellidov" type="text" name="apellidov"></ion-input>
+      <div *ngFor="let error of errorMessages.apellidov">
+        <ng-container *ngIf="apellidov.hasError(error.type) && (apellidov.dirty || apellidov.touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" style="text-align: center">Ingrese numero de celular:(Opcional)</ion-label>
+      <ion-input formControlName="telv" type="number" name="telv"></ion-input>
+      <div *ngFor="let error of errorMessages.telv">
+        <ng-container *ngIf="telv.hasError(error.type) && (telv.dirty || telv.touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+    </ion-item>
+    <ion-button [disabled]="!profileForm.valid" expand="block" *ngIf="urlImage | async; else btnDisabled"
+      (click)="updateProfile()">Guardar</ion-button>
+    <br>
+    <ng-template #btnDisabled>
+      <ion-button expand="block" disabled=true (click)="updateProfile()" type="submit" color="tertiary">Guardar
+      </ion-button>
+    </ng-template>
+  </form>
+</ion-content>

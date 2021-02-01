@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/rentados"></ion-back-button>
+      <ion-title>Agregar comentario</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+
+
+    <form [formGroup]="comentarioForm" (ngSubmit)="enviarComentario()">
+      <ion-item>
+        <ion-textarea clear rows="3" type="text" formControlName="comentarioa"
+          placeholder="Cuentanos que te parecio el artículo" name="comentarioa">
+        </ion-textarea>
+        <div *ngFor="let error of errorMessages.comentarioa">
+          <ng-container
+            *ngIf="comentarioForm.get('comentarioa').hasError(error.type) && (comentarioa.dirty || comentarioa.touched)">
+            <small class="error-message">{{error.message}}</small>
+          </ng-container>
+        </div>
+      </ion-item>
+      <br>
+      <ion-label>&nbsp; &nbsp; Califica al usuario del 1 al 5</ion-label>
+      <ion-input type="number" formControlName="calificaciona" name="calificaciona"></ion-input>
+    </form>
+
+  </ion-card>
+  <ion-grid>
+    <ion-row justify-content-center align-items-end style="height:100%">
+      <ion-col col-2>
+      </ion-col>
+      <ion-col col-8>
+        <ion-button expand="block" color="tertiary" style="width: 100%; position: center;" (click)="enviarComentario()"
+          [disabled]="!comentarioForm.valid"> Continuar
+        </ion-button>
+      </ion-col>
+      <ion-col col-2>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

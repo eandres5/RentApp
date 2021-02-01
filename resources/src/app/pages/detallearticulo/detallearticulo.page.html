@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>Mis artículos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarpop($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-item>
+    <ion-searchbar type="text" (ionChange)="buscar($event)"></ion-searchbar>
+  </ion-item>
+  <!--
+    
+  -->
+</ion-header>
+
+<ion-content>
+  
+    
+
+  <ion-list>
+    <ion-item *ngFor="let articulo of articulos | filtro: textoBuscar: 'titulo'">
+      <ion-thumbnail slot="start">
+        <img [src]=" articulo.img == ''? '/assets/images/camera.png': articulo.img">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{articulo.titulo}}</h2>
+        <p>{{articulo.descripcion}}</p>
+        <p>Valor: {{articulo.costo}} $</p>
+        <h2>Rentado por: {{articulo.rentadoPor}}</h2>
+        <ion-button slot="end" color="tertiary" (click)="editararticulo(articulo.id)">Editar <ion-icon name="clipboard"></ion-icon></ion-button>
+        <ion-button slot="end" color="danger"  (click)="eliminarArticulo(articulo.id)">Eliminar <ion-icon name="trash"></ion-icon></ion-button>
+        <br>
+        <ion-button slot="end" (click)="irCandidatos(articulo.id)">Candidatos Renta</ion-button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

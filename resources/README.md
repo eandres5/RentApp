@@ -1,8 +1,4 @@
-These are Cordova resources. You can replace icon.png and splash.png and run
-`ionic cordova resources` to generate custom icons and splash screens for your
-app. See `ionic cordova resources --help` for details.
+# RentApp
+Proyecto de titulación, la aplicación esta orientada a renta de articulos, tiene su sección de registro de usuarios, inicio de sesión, CRUD de artículos por usuario, todo esto con una conexión a base de datos no relacional (firebase)
 
-Cordova reference documentation:
-
-- Icons: https://cordova.apache.org/docs/en/latest/config_ref/images.html
-- Splash Screens: https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-splashscreen/
+La aplicacion esta siendo desarrollada en ionic y firebase

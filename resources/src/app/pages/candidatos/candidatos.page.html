@@ -1,0 +1,14 @@
+<ion-header [translucent]="true" >
+  <ion-toolbar color="tertiary">
+    <ion-title>candidatos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let candidato of usuariosGuardados">
+    <ion-label>
+      <h1>{{candidato.nombre}} {{candidato.apellido}}</h1>
+      <ion-button (click)="confirmarRenta(candidato.idPropietario)">Confirmar Renta</ion-button>
+    </ion-label>
+  </ion-item>
+</ion-content>
